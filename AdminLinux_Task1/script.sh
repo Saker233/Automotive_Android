@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+
+
 cd ~
 mkdir myDirectory
 cd myDirectory
