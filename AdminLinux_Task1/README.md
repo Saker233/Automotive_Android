@@ -1,4 +1,4 @@
-#DayOneQuestions
+![Screenshot_8](https://github.com/Saker233/Embedded-Linux/assets/130178079/31ce3083-be15-442a-a076-8dc5c8622d70)#DayOneQuestions
 
 
 1. List three Linux Distributions
@@ -42,7 +42,44 @@ Here when we used rmdir -p on OldFiles this also deleted the Document directory
 
 
 
+c.  
+![Screenshot_8](https://github.com/Saker233/Embedded-Linux/assets/130178079/e019a298-6c31-47df-8542-4b55d499c97a)
+The relative path: /home/saker/docs/mycv
+The absolute Path: /docs/mycv
 
+5.
+6.
+![Screenshot_9](https://github.com/Saker233/Embedded-Linux/assets/130178079/d428818f-ee3b-409d-94e6-5ae467489faf)
+
+
+7.
+  1 - cd ~
+  2 - cd /home/saker
+  3 - cd .. --------- cd .. -------- cd home/saker
+
+
+8.
+![Screenshot_10](https://github.com/Saker233/Embedded-Linux/assets/130178079/e50ab152-fab6-4e69-bb85-6ea8ee529a86)
+
+
+
+9. What command type are used for?
+    1- Alias -> Are executed before anything else, Generally it is an alias name for another command (ls = ls --color=auto)
+    2- Internal -> Commands that is part of the shell itself and deosnt have to be loaded from disk separately
+    3- External -> Commands that exist as an executalbe file on the disk
+
+
+10. Show 2 types of command file in /usr/bin that start with letter c
+
+     ![Screenshot_11](https://github.com/Saker233/Embedded-Linux/assets/130178079/4d3096b0-031e-4631-b996-91dff94abc8a)
+
+11.
+
+man -k read files
+
+
+12.
+apropos command is doing exaclty like man -k which is search tyhe manual pages on a seach keyword
 
 
 
