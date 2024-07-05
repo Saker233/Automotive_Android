@@ -48,7 +48,83 @@ So we go back to terminal and compile our file then execute the program easily a
 
 
 
+Q2:
 
+
+We moved the a.out binary from the building folder into /usr/local/bin by using the super user privilige
+then I went back to the home directory and I attempted to execute that bianry and it works from anywhere!
+
+
+
+![Screenshot_8](https://github.com/Saker233/Embedded-Linux/assets/130178079/56a68eed-895d-4702-af30-90b2d27ffac4)
+
+
+The reason behind why it works from anywhere is that environment variable PATH which the system uses to detect the location of any command we ececute on the terminal
+In the above screen shot I printed PATH and we can see /usr/local/bin in the PATH so when we wrote a.out the kernel went to check /usr/local/bin and found that a.out and executed it
+
+
+
+
+
+
+# Na2na2a
+
+1- List all the available shells
+
+We can get all avalilabe shells from the file shells which is in /etc/shells
+So we use the command cat to print the file content on the terminal "cat /etc/shells"
+
+
+
+![Screenshot_1](https://github.com/Saker233/Embedded-Linux/assets/130178079/29ea26ab-e5c1-44d4-9226-5f6e5709fd1a)
+
+
+
+
+
+2 - List all the environment varialbles in the system we use the command printenv
+
+
+
+
+![Screenshot_2](https://github.com/Saker233/Embedded-Linux/assets/130178079/67bc2d4b-6be2-43eb-8506-766e5f437c93)
+
+
+
+
+
+
+
+3 - Display your cuurent shell name
+
+The current shell name or location is being stored in an environment varilable called SHELL so we easily print this variable
+
+
+
+![Screenshot_3](https://github.com/Saker233/Embedded-Linux/assets/130178079/4ec4f2d5-14aa-4c5b-83f8-89602f90d154)
+
+
+
+
+
+
+
+4- 
+
+The backslash here as an escape sequnece for a new line to let you enter what echo gonna print
+
+
+![Screenshot_4](https://github.com/Saker233/Embedded-Linux/assets/130178079/20645122-cf79-4644-96ea-390d2d08ba6a)
+
+
+
+
+
+
+5-
+
+
+![Screenshot_5](https://github.com/Saker233/Embedded-Linux/assets/130178079/0827fcd8-e1e3-4270-be5a-606a371d62d6)
 
 
 
