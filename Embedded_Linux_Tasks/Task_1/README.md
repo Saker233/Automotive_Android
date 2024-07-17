@@ -152,7 +152,13 @@ saveenv
 
  ![Screenshot from 2024-07-17 23-52-17](https://github.com/user-attachments/assets/e46d8edd-a734-47fa-91a9-343f2feaccf1)
 
+So now we have to generate our bootscript as an image, it's now a .txt file the u-boot don't understand this format
+So we have a command called mkimage to generate our image from a .txt file so we will use the scrip as follows
 
+```bash
+mkimage -T script -n "Bootscript" -C none -d myscript.txt vxpress-bootscript
+
+```
 
 after we create our script as an image to be loaded we have 2 do 2 things
   1- change the bootcmd command by setenv
