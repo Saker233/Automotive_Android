@@ -113,7 +113,7 @@ This will show the specific address
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Task2: How to make a file (u-boot script) on the virtual SD Card and make it run once QEMU Boots
 
-First thing we gonna create our script on the FAT16 partition in the virtual SD Card -> myscript.txt
+1- we gonna create our script on the FAT16 partition in the virtual SD Card -> myscript.txt
 
 
 
@@ -122,13 +122,71 @@ First thing we gonna create our script on the FAT16 partition in the virtual SD 
 
 
 
-Second we will launch QEMU emulator with the command
+2- we will launch QEMU emulator with the command
 
 
 
 ```bash
 sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ~/u-boot/u-boot -sd ~/sd.img
 ```
+
+
+3- we will write our script in myscript.txt (the script written in u-boot commands not bash)
+
+```bash
+mmc dev 0
+if [ $? -eq 0 ]; then
+    fatload mmc 0:1 0x60002000 zImage
+    fatload mmc 0:1 0x60002500 myfile.dtp
+elif ping 192.168.1.8; then
+    echo "load from network"
+else
+    echo "No Option"
+fi
+
+setenv loadbootsc no
+saveenv
+
+```
+ The use of loadbootsc is not being executing the script twice while booting
+
+ ![Screenshot from 2024-07-17 23-52-17](https://github.com/user-attachments/assets/e46d8edd-a734-47fa-91a9-343f2feaccf1)
+
+
+
+after we create our script as an image to be loaded we have 2 do 2 things
+  1- change the bootcmd command by setenv
+      ```bash
+        fatload mmc 0:1 0x60003000 vxpress-bootscript; source 0x60003000
+        ```
+        This means that if bootcmd gonna run it will
+            1- load the file vxpress-bootscript into RAM at address 0x60002000
+            2- run the script fromt the same address
+            3- saveenv to save the variable
+
+
+After we closed QEMU and Launched again we can see clearly that the our script ran successfully
+
+The autoboot process
+![Screenshot from 2024-07-18 00-35-07](https://github.com/user-attachments/assets/28f97888-42e6-44b9-80d6-629004a82cc0)
+
+
+
+ZImage
+![Screenshot from 2024-07-18 00-35-32](https://github.com/user-attachments/assets/90e93492-9fca-469a-8101-6e94710408dd)
+
+
+myfile.dtp
+![Screenshot from 2024-07-18 00-35-59](https://github.com/user-attachments/assets/29dd333a-0bfb-421c-a2de-3acee8590fa1)
+
+
+
+
+The script(Image)
+![Screenshot from 2024-07-18 00-36-24](https://github.com/user-attachments/assets/48411e64-1daa-4ca5-992a-0894219774a2)
+
+
+
 
 
 
