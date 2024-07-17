@@ -134,8 +134,7 @@ sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script
 3- we will write our script in myscript.txt (the script written in u-boot commands not bash)
 
 ```bash
-mmc dev 0
-if [ $? -eq 0 ]; then
+if mmc dev; then
     fatload mmc 0:1 0x60002000 zImage
     fatload mmc 0:1 0x60002500 myfile.dtp
 elif ping 192.168.1.8; then
@@ -146,6 +145,7 @@ fi
 
 setenv loadbootsc no
 saveenv
+
 
 ```
  The use of loadbootsc is not being executing the script twice while booting
