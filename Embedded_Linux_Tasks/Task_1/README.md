@@ -1,4 +1,4 @@
-# How to create a tap connection between QEMU and linux
+# Task1: How to create a tap connection between QEMU and linux
 
 To establish a connection between your Linux machine and QEMU without an Ethernet cable or NIC, follow these steps:
 
@@ -110,7 +110,25 @@ This will show the specific address
 ![Screenshot from 2024-07-17 03-07-13](https://github.com/user-attachments/assets/cf36702f-acea-496f-aa41-554ecd49293c)
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Task2: How to make a file (u-boot script) on the virtual SD Card and make it run once QEMU Boots
 
+First thing we gonna create our script on the FAT16 partition in the virtual SD Card -> myscript.txt
+
+
+
+![Screenshot from 2024-07-17 16-36-25](https://github.com/user-attachments/assets/1e314ace-63c2-4ab8-9305-89d7d92694f6)
+
+
+
+
+Second we will launch QEMU emulator with the command
+
+
+
+```bash
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ~/u-boot/u-boot -sd ~/sd.img
+```
 
 
 
