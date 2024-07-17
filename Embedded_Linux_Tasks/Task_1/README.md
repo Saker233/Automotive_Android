@@ -166,7 +166,7 @@ after we create our script as an image to be loaded we have 2 do 2 things
         fatload mmc 0:1 0x60003000 vxpress-bootscript; source 0x60003000
         ```
         This means that if bootcmd gonna run it will
-            1- load the file vxpress-bootscript into RAM at address 0x60002000
+            1- load the file vxpress-bootscript into RAM at address 0x60003000
             2- run the script fromt the same address
             3- saveenv to save the variable
 
