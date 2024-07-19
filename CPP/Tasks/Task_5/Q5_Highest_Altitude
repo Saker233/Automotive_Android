@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int largestAltitude(vector<int>& gain) 
+    {
+        int step = 0;
+        int alt = 0;
+
+        for(auto i : gain)
+        {
+            step = step + i;
+
+            if((step > 0) && (step > alt))
+            {
+                alt = step;
+            }
+        }    
+        return alt;
+    }
+};
