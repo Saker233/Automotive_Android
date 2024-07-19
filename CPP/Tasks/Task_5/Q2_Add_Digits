@@ -1,0 +1,23 @@
+class Solution
+{
+
+public:
+    int addDigits(int num)
+    {
+        int qut = 10;
+        int rem = 0;
+        int new_num = 0;
+
+        while (qut != 0)
+        {
+            qut = num / 10; // 38 / 10 = 3
+            rem = num % 10; // rem = 8
+
+            new_num = qut + rem; // 8 + 3 = 11
+
+            num = new_num;
+        }
+
+        return num;
+    }
+};
