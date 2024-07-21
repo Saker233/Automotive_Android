@@ -22,3 +22,33 @@ We will add this "--create" to options
 
 and also to let the QEMU's TFTP Access the linux machine we will grant and access to the tftp user to the directory /srv/tftp
 
+```
+sudo chown tftp /srv/tftp
+```
+
+This will change the owner of this directory to be the tftp so he can R/W
+
+# On the QEMU Side
+
+We will change our script which we made in the last task with the new commands
+
+
+```
+if mmc dev; then
+    fatload mmc 0:1 $kernel_addr_r zImage
+    fatload mmc 0:1 $fdt_addr_r myfile.dtp
+elif ping 192.168.1.8; then
+    setenv serverip 192.168.1.8
+    saveenv
+    tftp $kernel_addr_r zImage
+    tftp $fdt_addr_r vxpress-bootscript
+else
+    echo "No Option"
+fi
+
+setenv
+```
+
+
+
+
