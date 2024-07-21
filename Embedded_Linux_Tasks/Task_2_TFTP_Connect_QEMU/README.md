@@ -30,24 +30,35 @@ This will change the owner of this directory to be the tftp so he can R/W
 
 # On the QEMU Side
 
-We will change our script which we made in the last task with the new commands
 
+We will change the bootcmd to run this
 
 ```
-if mmc dev; then
-    fatload mmc 0:1 $kernel_addr_r zImage
-    fatload mmc 0:1 $fdt_addr_r myfile.dtp
-elif ping 192.168.1.8; then
-    setenv serverip 192.168.1.8
-    saveenv
-    tftp $kernel_addr_r zImage
-    tftp $fdt_addr_r vxpress-bootscript
-else
-    echo "No Option"
-fi
+setenv serverip 192.168.1.8;
+saveenv;
+tftp $kernel_addr_r zImage;
+tftp $fdt_addr_r vxpress-bootscript;
 
-setenv
 ```
+
+
+![Screenshot from 2024-07-21 23-44-21](https://github.com/user-attachments/assets/e2ab4c9c-78c0-449b-a5f9-2a367644fcef)
+
+
+
+
+
+
+
+
+![Screenshot from 2024-07-21 23-44-48](https://github.com/user-attachments/assets/d9fb03fa-1632-441c-9e0a-558172e7ad32)
+
+
+
+
+
+
+
 
 
 
