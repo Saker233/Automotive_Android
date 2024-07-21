@@ -1,3 +1,5 @@
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=~/Desktop/A9/script_new.sh -kernel ~/Desktop/A9/u-boot -sd ~/sd.img
+
 # We can boot the QEMU via The extlinux.conf and the bootflow scan command
 
 
@@ -16,7 +18,7 @@ We also have to make our extlinux script to make it load the Zimage and the dtb 
 ```                            
 LABEL boot
         KERNEL ../zImage
-        fdtdir ../myfile.dtb
+        DTB ../myfile.dtb
 
 ```
 
