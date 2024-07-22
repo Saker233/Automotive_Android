@@ -183,3 +183,42 @@ dtb
 
 
 
+
+
+
+
+# 3- Loading Via extlinux.conf
+
+
+First thing we make that file tree hierarchy
+
+![Screenshot from 2024-07-22 04-09-43](https://github.com/user-attachments/assets/3da3be02-2755-4c9a-aa07-c56a15e6578d)
+
+
+and we edit the extlinux.conf with your suitable editor (I personally prefer nano)
+
+```
+DEFAULT myext
+LABEL myext
+    KERNEL ../zImage
+    FDT ../vexpress-v2p-ca9.dtb
+
+```
+
+![Screenshot from 2024-07-22 04-11-46](https://github.com/user-attachments/assets/4604ebe0-d849-49bd-ba76-02b4eb18157b)
+
+
+
+# On QEMU side
+
+we will edit the variable bootcmd to run the bootflow scan
+
+```
+setenv boot cmd "bootflow scan"
+saveenv
+```
+to make it run right after booting
+
+
+
+
