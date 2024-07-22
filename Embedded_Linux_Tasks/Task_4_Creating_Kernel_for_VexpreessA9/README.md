@@ -1,6 +1,11 @@
-![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/6db35da3-c002-4594-aceb-3c2cc8201bd7)![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/60acceb5-0e53-49ae-8a6c-5bee63e5049a)# Making a kernel Image for Vexpress A9 board running on QEMU
+
+
+# Making a kernel Image for Vexpress A9 board running on QEMU
 
 first we have to clone the linux repo
+
+
+![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/6db35da3-c002-4594-aceb-3c2cc8201bd7)![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/60acceb5-0e53-49ae-8a6c-5bee63e5049a)
 
 ```
 git clone --depth=1 git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
