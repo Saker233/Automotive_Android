@@ -1,4 +1,4 @@
-# Making a kernel Image for Vexpress A9 board running on QEMU
+![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/6db35da3-c002-4594-aceb-3c2cc8201bd7)![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/60acceb5-0e53-49ae-8a6c-5bee63e5049a)# Making a kernel Image for Vexpress A9 board running on QEMU
 
 first we have to clone the linux repo
 
@@ -87,6 +87,59 @@ we can see the output zImage on /arch/arm/boot
 
 ![Screenshot from 2024-07-22 03-44-02](https://github.com/user-attachments/assets/27f38ce3-64a7-4733-beb0-66509dd9d1c9)
 
+
+
+and the dts we can find it under /arch/arm/boot/dts/arm "vexpress-v2p-ca9.dtb"
+
+
+
+
+
+![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/1d11073a-b2f9-4cbf-9110-6eab5a9bdbe1)
+
+
+
+
+
+
+Now we have 2 files
+  1- zImage
+  2- vexpress-v2p-ca9.dtb
+
+We can boot it on QEMU in 3 methods
+  1- Flashing it Manually via fatload
+  2- Flashing it by TFTP protocol
+  3- Using the flow extlinux with bootflow scan
+
+
+
+
+
+## 1- Flashing it Manually via fatload
+
+First we gonna copy the two files into our virtual SD card
+
+```
+sudo cp vexpress-v2p-ca9.dtb /media/saker/boot1
+
+sudo cp ~/linux/arch/arm/boot/zImage /media/saker/boot1
+```
+
+
+Then launch QEMU
+
+```
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ./u-boot -sd ~/sd.img
+
+```
+
+First load the image on the address $kernel_addr_r
+
+```
+fatload mmc 0:1 $kernel_addr_r zImage
+fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+```
+![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/76650a8b-27b1-4cab-a587-ec27054eb858)
 
 
 
