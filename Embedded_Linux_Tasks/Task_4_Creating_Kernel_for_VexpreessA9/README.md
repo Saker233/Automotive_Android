@@ -46,7 +46,17 @@ And The configuration menu gonna show
     but also it slower in execution
     ![Screenshot from 2024-07-22 03-25-33](https://github.com/user-attachments/assets/2c37f4f8-6b42-4f9d-9a11-2d24163476f1)
 
+
+
+
+
+    
+
     ![Screenshot from 2024-07-22 03-25-46](https://github.com/user-attachments/assets/34097ff0-fa44-4560-816e-0be829f22d9f)
+
+
+
+    
 
   3- CHange the Kernel name into you name [[OPTIONAL]]
 
