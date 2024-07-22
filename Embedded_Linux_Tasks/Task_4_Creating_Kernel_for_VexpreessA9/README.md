@@ -5,7 +5,7 @@
 first we have to clone the linux repo
 
 
-![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/6db35da3-c002-4594-aceb-3c2cc8201bd7)![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/60acceb5-0e53-49ae-8a6c-5bee63e5049a)
+
 
 ```
 git clone --depth=1 git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
@@ -146,8 +146,9 @@ fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
 ```
 ![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/76650a8b-27b1-4cab-a587-ec27054eb858)
 
+![Screenshot from 2024-07-22 03-47-11](https://github.com/user-attachments/assets/60acceb5-0e53-49ae-8a6c-5bee63e5049a)
 
-
+![Screenshot from 2024-07-22 03-57-03](https://github.com/user-attachments/assets/6db35da3-c002-4594-aceb-3c2cc8201bd7)
 
 
 # Second Loading via TFTP
