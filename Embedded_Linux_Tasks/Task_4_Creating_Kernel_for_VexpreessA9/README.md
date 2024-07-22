@@ -58,9 +58,39 @@ And The configuration menu gonna show
 
     
 
-  3- CHange the Kernel name into you name [[OPTIONAL]]
+  3- Change the Kernel name into you name [[OPTIONAL]]
+
+
+  ![Screenshot from 2024-07-22 03-31-48](https://github.com/user-attachments/assets/b2d18251-3036-4fd4-88c8-cd61bec89891)
+
+  
 
 Leave everything in the default save & exit
+
+
+Make and build the kernel
+
+
+```
+ make -j4 zImage modules dtbs
+```
+
+
+And it finishes successfully
+![Screenshot from 2024-07-22 03-38-51](https://github.com/user-attachments/assets/305c2dcc-4598-45fa-aaa4-d5c45b780159)
+
+
+
+we can see the output zImage on /arch/arm/boot
+
+
+
+![Screenshot from 2024-07-22 03-44-02](https://github.com/user-attachments/assets/27f38ce3-64a7-4733-beb0-66509dd9d1c9)
+
+
+
+
+
 
 
 
