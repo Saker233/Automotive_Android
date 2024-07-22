@@ -145,7 +145,41 @@ fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
 
 
 
+# Second Loading via TFTP
 
+We will copy the zImage and the dtb file into /srv/tftp
+
+
+```
+sudo cp vexpress-v2p-ca9.dtb /srv/tftp
+sudo cp zImage /srv/tftp/
+```
+
+![Screenshot from 2024-07-22 04-04-20](https://github.com/user-attachments/assets/9834bd9a-fd0c-4898-bc5d-62a8cbbb66cc)
+
+
+
+
+
+
+# on the QEMU side
+
+```
+setenv serverip 192.168.1.8
+saveenv
+tftp $kernel_addr_r zImage
+tftp $fdt_addr_r vexpress-v2p-ca9.dtb
+
+
+```
+zImage
+![Screenshot from 2024-07-22 04-06-44](https://github.com/user-attachments/assets/fa2935f0-0a46-49f5-8698-6785e131bef2)
+
+
+dtb
+
+
+![Screenshot from 2024-07-22 04-07-09](https://github.com/user-attachments/assets/1f9f6fdd-5705-4e8e-b203-f68e80fb7ab2)
 
 
 
