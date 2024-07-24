@@ -101,8 +101,15 @@ Example: An ext4-formatted image ready to be written to an SD card.
 
 3. Network Filesystem (NFS)
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 The root filesystem can also be loaded from a network via an NFS (Network File System) server and mounted on the target during boot.
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
