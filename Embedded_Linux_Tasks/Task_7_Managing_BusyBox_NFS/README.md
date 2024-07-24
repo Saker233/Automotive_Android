@@ -115,17 +115,7 @@ All of that was on the host x86 linux machine now we will run into QEMU
 
 ## On QEMU
 
-we first will make change to that network script we run QEMU with
 
-```
-#!/bin/bash
-
-
-ip a add 192.168.100.58/24 dev $1
-ip link set $1 up
-
-
-```
 
 
 and launch QEMU
@@ -172,3 +162,18 @@ And finally to load both kernel // dtb //rootfs
 bootz $Zimag_RAM_Add - $dtb_hardware_Add
 
 ```
+
+
+
+![Screenshot from 2024-07-24 21-01-13](https://github.com/user-attachments/assets/bfdae336-3240-43dd-8616-f569202da67e)
+
+
+
+![Screenshot from 2024-07-24 21-01-44](https://github.com/user-attachments/assets/dea485d1-0926-423a-a6ac-35b73bb6f79c)
+
+
+
+VOILAAAAA we made the kernel and rootfs UPP with NFS and TFTP
+
+![Screenshot from 2024-07-24 21-11-58](https://github.com/user-attachments/assets/dee496b2-c76b-45af-a94d-20685f96543b)
+
