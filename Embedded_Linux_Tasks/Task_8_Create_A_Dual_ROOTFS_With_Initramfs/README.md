@@ -70,13 +70,9 @@ gzip initramfs.cpio
 mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
 
 ```
-**Change to the root filesystem directory:**
 
-    ```
-    cd ~/rootfs
-    ```
 
-2. **Create a CPIO archive of the root filesystem:**
+**Create a CPIO archive of the root filesystem:**
 
     ```
     find . | cpio -H newc -ov --owner root:root > ../initramfs.cpio
@@ -86,13 +82,9 @@ mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
     - `cpio -H newc -ov --owner root:root`: Creates a new CPIO archive in "newc" format, preserving ownership as root.
     - `> ../initramfs.cpio`: Redirects the output to a file named `initramfs.cpio` in the parent directory.
 
-3. **Change to the parent directory:**
 
-    ```
-    cd ..
-    ```
 
-4. **Compress the CPIO archive using gzip:**
+**Compress the CPIO archive using gzip:**
 
     ```
     gzip initramfs.cpio
@@ -100,7 +92,7 @@ mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
 
     This creates `initramfs.cpio.gz`.
 
-5. **Create a U-Boot image from the compressed initramfs:**
+**Create a U-Boot image from the compressed initramfs:**
 
     ```
     mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
