@@ -137,6 +137,12 @@ setenv dtb_hardware_Add 65000000
 saveenv
 ```
 
+console=ttyAMA0: Specifies the console device. This is typically the serial console.
+root=/dev/nfs: Indicates that the root filesystem is located on an NFS server.
+ip=192.168.1.100:::::eth0: Specifies the IP address and network configuration. Here, the device IP is 192.168.1.100 and the network interface is eth0.
+nfsroot=192.168.1.8:/srv/nfs-share,nfsvers=3,tcp rw: Specifies the NFS server and the path to the shared directory. The NFS server IP is 192.168.1.8, and the shared directory is /srv/nfs-share. The NFS version is set to 3, and TCP is used. The rw option means the filesystem will be mounted read-write.
+init=/sbin/init: Specifies the initial program to run after the kernel is booted, which is /sbin/init.
+
 
 Then we will load our zImage and dtb file via TFTP protocol
 
