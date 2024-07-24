@@ -131,7 +131,7 @@ In Qemu
 ```
 setenv serverip 192.168.100.58
 setenv ipaddr 192.168.1.100
-setenv bootargs 'console=ttyAMA0  root=/dev/nfs ip=192.168.1.100:::::eth0 nfsroot=192.168.1.4:/srv/nfs-share,nfsvers=3,tcp rw init=/sbin/init'
+setenv bootargs 'console=ttyAMA0  root=/dev/nfs ip=192.168.1.100:::::eth0 nfsroot=192.168.1.8:/srv/nfs-share,nfsvers=3,tcp rw init=/sbin/init'
 setenv Zimag_RAM_Add 60000000
 setenv dtb_hardware_Add 65000000
 saveenv
