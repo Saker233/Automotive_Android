@@ -95,4 +95,80 @@ sudo nano /etc/exports
 ```
 /srv/nfs-share 192.168.1.100(rw,no_root_squash,no_subtree_check)
 ```
+![Screenshot from 2024-07-24 20-13-37](https://github.com/user-attachments/assets/2e4c6927-092b-46d5-8a11-f1a0de153d7e)
 
+
+
+
+Then we have to restart the NFS to make the configuration applied
+
+```
+sudo systemctl restart nfs-kernel-server
+
+```
+
+
+All of that was on the host x86 linux machine now we will run into QEMU
+
+
+
+
+## On QEMU
+
+we first will make change to that network script we run QEMU with
+
+```
+#!/bin/bash
+
+
+ip a add 192.168.100.58/24 dev $1
+ip link set $1 up
+
+
+```
+
+
+and launch QEMU
+
+```
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ./u-boot -sd ~/sd.img
+
+```
+
+
+In Qemu
+
+```
+setenv serverip 192.168.100.58
+setenv ipaddr 192.168.1.100
+setenv bootargs 'console=ttyAMA0  root=/dev/nfs ip=192.168.1.100:::::eth0 nfsroot=192.168.1.4:/srv/nfs-share,nfsvers=3,tcp rw init=/sbin/init'
+setenv Zimag_RAM_Add 60000000
+setenv dtb_hardware_Add 65000000
+saveenv
+```
+
+
+Then we will load our zImage and dtb file via TFTP protocol
+
+```
+tftp $Zimag_RAM_Add /qemu/zImage
+tftp $dtb_hardware_Add /qemu/vexpress-v2p-ca9.dtb
+```
+
+
+and to get rid of the hassle of each launch we will set our bootcmd with that
+
+```
+setenv bootcmd "echo "tftp $Zimag_RAM_Add /qemu/zImage;tftp $dtb_hardware_Add /qemu/vexpress-v2p-ca9.dtb"
+
+saveenv
+```
+
+
+
+And finally to load both kernel // dtb //rootfs
+
+```
+bootz $Zimag_RAM_Add - $dtb_hardware_Add
+
+```
