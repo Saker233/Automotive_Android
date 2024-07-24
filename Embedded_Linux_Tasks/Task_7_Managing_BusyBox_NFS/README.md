@@ -67,3 +67,32 @@ and we will copy the satgging rootfs content into that directory in odrer to mak
 ```
 sudo cp -rp ~/rootfs/* /srv/nfs-share
 ```
+
+
+Now we have to configure both host and target IPs
+
+to get the host IP
+
+```
+ifconfig
+```
+
+That's my personal IP
+
+![Screenshot from 2024-07-24 20-10-48](https://github.com/user-attachments/assets/24ffc69e-4963-4fbc-87b8-8cf78f32dc22)
+
+
+
+And we will configure any IP with the same subnet to QEMU but make sure it's not assigned to any other device
+
+The assignation of NFS will be the /etc/exports
+
+
+```
+sudo nano /etc/exports
+
+```
+```
+/srv/nfs-share 192.168.1.100(rw,no_root_squash,no_subtree_check)
+```
+
