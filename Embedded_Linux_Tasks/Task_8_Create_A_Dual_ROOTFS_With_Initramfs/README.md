@@ -50,9 +50,6 @@ The `initramfs` (initial RAM filesystem) is a temporary root filesystem used by 
 - **Hardware Abstraction**: Abstracts hardware differences, making the kernel boot process more hardware-agnostic.
 - **Modularity**: Allows for modular loading of drivers and other components, reducing the need for monolithic kernels.
 - **Rescue and Recovery**: Provides a fallback environment for system recovery and maintenance tasks.
+- **Additional stage Bootloader**: Provides A bootloader stage which act as a boot manager to make decision which rootfs will boot
+- **Ensure Security and Data Inyegrity**: Make always a checsum on the rootfs and decide whether its data valid or not 
 
-## Examples and Use Cases
-
-- **Custom Kernel**: When building a custom kernel, you can tailor `initramfs` to include only necessary modules and scripts.
-- **Embedded Systems**: In embedded systems, a lightweight `initramfs` can be used to boot the device quickly.
-- **Live Systems**: Live CDs or USBs use `initramfs` to boot into a temporary environment without needing a physical installation.
