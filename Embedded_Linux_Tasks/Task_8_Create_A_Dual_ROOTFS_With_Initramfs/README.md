@@ -51,5 +51,65 @@ The `initramfs` (initial RAM filesystem) is a temporary root filesystem used by 
 - **Modularity**: Allows for modular loading of drivers and other components, reducing the need for monolithic kernels.
 - **Rescue and Recovery**: Provides a fallback environment for system recovery and maintenance tasks.
 - **Additional stage Bootloader**: Provides A bootloader stage which act as a boot manager to make decision which rootfs will boot
-- **Ensure Security and Data Inyegrity**: Make always a checsum on the rootfs and decide whether its data valid or not 
+- **Ensure Security and Data Inyegrity**: Make always a checsum on the rootfs and decide whether its data valid or not
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+Task: The task is about creating an initramfs which act as a boot manager between 2 physical rootfs and asks the user which rootfs to boot
+
+
+
+
+firstly we will got into our stagging rootfs and create our initramfs
+
+```
+cd ~/rootfs
+find . | cpio -H newc -ov --owner root:root > ../initramfs.cpio
+cd ..
+gzip initramfs.cpio
+mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
+
+```
+**Change to the root filesystem directory:**
+
+    ```
+    cd ~/rootfs
+    ```
+
+2. **Create a CPIO archive of the root filesystem:**
+
+    ```
+    find . | cpio -H newc -ov --owner root:root > ../initramfs.cpio
+    ```
+
+    - `find .`: Lists all files and directories starting from the current directory.
+    - `cpio -H newc -ov --owner root:root`: Creates a new CPIO archive in "newc" format, preserving ownership as root.
+    - `> ../initramfs.cpio`: Redirects the output to a file named `initramfs.cpio` in the parent directory.
+
+3. **Change to the parent directory:**
+
+    ```
+    cd ..
+    ```
+
+4. **Compress the CPIO archive using gzip:**
+
+    ```
+    gzip initramfs.cpio
+    ```
+
+    This creates `initramfs.cpio.gz`.
+
+5. **Create a U-Boot image from the compressed initramfs:**
+
+    ```
+    mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
+    ```
+
+    - `-A arm`: Specifies the architecture (ARM in this case).
+    - `-O linux`: Specifies the operating system (Linux).
+    - `-T ramdisk`: Specifies the image type (ramdisk).
+    - `-d initramfs.cpio.gz`: Specifies the input file.
+    - `uRamdisk`: Specifies the output file name.
+
 
