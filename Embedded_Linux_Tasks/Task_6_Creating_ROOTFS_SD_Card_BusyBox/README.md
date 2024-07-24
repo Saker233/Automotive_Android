@@ -339,9 +339,26 @@ Then we need to boot the kernel
 bootz $kernel_addr_r - $fdt_addr_r
 
 ```
+AND THEN VOILAAAAA the kernel finally starts and he is accepting the commands
+
+
+![Screenshot from 2024-07-24 07-15-07](https://github.com/user-attachments/assets/b77843f4-1798-4ed6-a7d5-79f4d8af1726)
 
 
 
 
 
+![Screenshot from 2024-07-24 07-15-40](https://github.com/user-attachments/assets/59c9e6f8-239c-4c29-9eea-7d6a9f18b0d6)
 
+
+
+
+
+We will notice that if we closed QEMU and starts again it doesnt auto boot then we will change boot cmd with
+
+```
+setenv bootcmd 'fatload mmc 0:1 $kernel_addr_r zImage; fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb; bootz $kernel_addr_r - $fdt_addr_r'
+
+saveenv
+
+```
