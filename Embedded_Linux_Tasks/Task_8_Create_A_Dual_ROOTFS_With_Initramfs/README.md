@@ -105,3 +105,73 @@ mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
     - `uRamdisk`: Specifies the output file name.
 
 
+
+Now we have uRamdisk which will do everything in u-boot
+
+
+We will copy uRamdisk in our FAT16 boot partition in the virtual SD Card
+
+and we will launch QEMUUUU
+
+```
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ./u-boot -sd ~/sd.img
+
+
+```
+
+We have to set some variables first
+
+```
+setenv initramfs 0x60800000
+
+
+fatload mmc 0:1 $kernel_addr_r zImage
+fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+fatload mmc 0:1 $initramfs uRamdisk
+
+
+setenv bootargs "console=ttyAMA0 rdinit=/bin/sh"
+
+
+bootz $kernel_addr_r $initramfs $fdt_addr_r
+
+
+
+```
+
+
+If we make the above variables and launched our kernel it will work proprelyyyy
+
+
+
+
+![Screenshot from 2024-07-25 02-45-06](https://github.com/user-attachments/assets/6d93d328-fed5-4fb9-a4b5-b48053aa89ba)
+
+
+
+Even if we unmounted our virtual SD Card the shell in QEMU still working fine
+
+![Screenshot from 2024-07-25 02-51-28](https://github.com/user-attachments/assets/40bef411-b63a-4ac6-a6e1-63ebc65197eb)
+
+
+
+![Screenshot from 2024-07-25 02-52-30](https://github.com/user-attachments/assets/53428169-0168-4e2c-97c8-91bc396fc755)
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+But this was not our task -> our task was to make the initramfs boot manager and to switch between 2 aprtitions (rootfs)
+
+So first thing we will go and split our rootfs into 2 partitions
+   1- rootfs1
+   2- rootfs2
+
+go to Disks using your GUI
+
+
+
+![Screenshot from 2024-07-25 02-47-05](https://github.com/user-attachments/assets/b8b34b2e-f3d9-4d79-8614-a87bfa4ee1de)
+
+
+
+We will see our virtual SD Card has 2 partitions boot and rootfs we will 
