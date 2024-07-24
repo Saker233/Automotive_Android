@@ -23,6 +23,9 @@ After obtaining its rootfs, the kernel will execute its first-ever program, `ini
 
 The Linux kernel does not care about the layout of files and directories. However, we will stick with the Filesystem Hierarchy Standard (FHS).
 
+![Screenshot from 2024-07-24 04-12-13](https://github.com/user-attachments/assets/84eaf025-1783-446d-ac2b-6266f8de336c)
+
+
 ## Programs for the Root Filesystem
 
 Now we have to prepare the essential programs and supporting libraries to launch our rootfs.
@@ -109,6 +112,235 @@ The root filesystem can also be loaded from a network via an NFS (Network File S
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Making a practical ROOTFS
+
+From the last chapter we have already made our kernel which cross compiled with our cross compiler Arm-A9
+
+but while booting the kernel PANICS because he cant find the rootfs
+
+And here we are creating one
+
+
+
+First thing to do is install Busybox
+
+```
+git clone https://github.com/mirror/busybox.git
+```
+
+and configure our cross compiler and the CPU architecture
+
+```
+export CROSS_COMPILE=~/x-tools/arm-cortexa9_neon-linux-musleabihf/bin/arm-cortexa9_neon-linux-musleabihf-
+export ARCH=arm
+```
+After that we will enter the menu configuration of busybox
+
+```
+make menuconfig
+```
+
+The only thing that we will do is change the building process should be static
+
+![Screenshot from 2024-07-24 06-26-04](https://github.com/user-attachments/assets/fbd45d80-0486-4159-8d6e-4bb6887aeaf4)
+
+
+
+and then go to compile the whole build
+```
+make
+```
+
+![Screenshot from 2024-07-24 06-28-58](https://github.com/user-attachments/assets/b7cc8ead-1feb-4d71-aad3-b49e51789a6d)
+
+
+
+
+and then we need to compile the binaries itself 
+
+```
+make install
+```
+after the make completed successfully a directory should appear under the name "_install"
+
+
+we have to make a stagging rootfs in our host machine
+
+I made it under my root and I have to copy all the binaries under _install to it
+
+```
+rsync -a ~/busybox/_install/* ~/rootfs
+
+```
+
+
+we also have to create manually all the directoreis that busybox didnt create
+
+```
+mkdir boot dev etc home mnt proc root srv sys
+
+```
+
+
+![Screenshot from 2024-07-24 06-39-43](https://github.com/user-attachments/assets/61dd8233-1966-4b90-814d-66325b8f5811)
+
+
+Now we have to create the rcS script will initialize and mount the proc // sysfs
+
+```
+
+
+```
+sudo mkdir etc/init.d
+sudo touch etc/init.d/rcS
+sudo nano etc/init.d/rcS
+
+```
+#!/bin/sh
+# mount a filesystem of type `proc` to /proc
+mount -t proc nodev /proc
+# mount a filesystem of type `sysfs` to /sys
+mount -t sysfs nodev /sys
+# mount devtmpfs if you forget to configure it in Kernel menuconfig
+mount -t devtmpfs devtempfs /dev
+
+```
+
+
+but this script should be executable to run
+
+
+```
+sudo chmod +x etc/init.d/rcS
+
+```
+
+
+
+
+The next step is to create the inittab script
+
+```
+sudo touch etc/inittab
+
+sudo nano etc/inittab
+```
+
+
+
+```
+# inittab file 
+#-------------------------------------------------------
+#When system startup,will execute "rcS" script
+::sysinit:/etc/init.d/rcS
+#Start"askfirst" shell on the console (Ask the user firslty to press any key) 
+ttyAMA0::askfirst:-/bin/sh
+#when restarting the init process,will execute "init" 
+::restart:/sbin/init
+
+
+```
+Then we need to mount our virtual sd card to copy the rootfs from stagging area into the real rootfs
+
+```
+sudo losetup -f --show --partscan sd.img
+```
+
+
+
+![Screenshot from 2024-07-24 06-52-45](https://github.com/user-attachments/assets/4382190d-0971-4fdb-8444-170822df8818)
+
+
+
+and we will go into the rootfs which is empty
+
+
+The copying process:
+
+```
+cp -rp ~/rootfs/* /media/saker/rootfs
+
+```
+
+Now we have the zImage and .dtb file in the boot FAT16 and the rootfilesystem into rootfs now our Kernel panic issue should be solved
+
+
+we run QEMU
+
+```
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ./u-boot -sd ~/sd.img
+```
+
+
+in u-boot we have a variable called bootargs which provide the uboot with command line arguments // kernel initialization
+
+```
+setenv bootargs 'console=ttyAMA0 root=/dev/mmcblk0p2 rootfstype=ext4 rw rootwait init=/sbin/init'
+saveenv
+```
+console=ttyAMA0 -> pecifies the console device
+
+root=/dev/mmcblk0p2 -> Specifies the root filesystem's block device
+
+rootfstype=ext4 -> Specifies the filesystem type of the root filesystem
+
+rw -> read/write
+
+rootwait ->  Causes the kernel to wait for the root device to become available before proceeding with the boot process
+
+init=/sbin/init -> Specifies the path to the init process, which is the first process started by the Linux kernel.
+
+
+![Screenshot from 2024-07-24 07-04-08](https://github.com/user-attachments/assets/ac3d5556-3c45-432b-b82f-ac0b07caa782)
+
+
+
+We also should specify the addresses which the kernel and the dtb file will be loaded into
+
+```
+setenv kernel_addr_r 0x60000000
+
+setenv fdt_addr_r 0x65000000
+
+saveenv
+```
+
+
+and load the zImage then load the dtb
+
+```
+fatload mmc 0:1 $kernel_addr_r zImage
+
+
+fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+
+```
+
+
+![Screenshot from 2024-07-24 07-11-06](https://github.com/user-attachments/assets/3426114e-1713-41e4-a179-0e84d448760e)
+
+
+
+
+![Screenshot from 2024-07-24 07-11-39](https://github.com/user-attachments/assets/a4995413-2e48-41a4-834d-c181b38c1b4a)
+
+
+
+
+
+![Screenshot from 2024-07-24 07-11-39](https://github.com/user-attachments/assets/3cf8bd65-8cb7-4cf2-bfab-39a6b12709e2)
+
+
+
+Then we need to boot the kernel
+
+```
+bootz $kernel_addr_r - $fdt_addr_r
+
+```
+
+
 
 
 
