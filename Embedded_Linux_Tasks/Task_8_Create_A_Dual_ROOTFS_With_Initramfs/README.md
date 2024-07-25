@@ -175,3 +175,73 @@ go to Disks using your GUI
 
 
 We will see our virtual SD Card has 2 partitions boot and rootfs we will 
+
+   1- we will resize the rootfs partition
+   
+![Screenshot from 2024-07-25 02-54-32](https://github.com/user-attachments/assets/c308eb70-b781-4e87-acad-07fd96a949f5)
+
+
+it's 863 megabytes we will split it in half sharply
+so we will make it 431 megebytes
+
+
+
+![Screenshot from 2024-07-25 02-56-24](https://github.com/user-attachments/assets/80e7e585-0289-4b7c-bdb4-e1c6176dc9d5)
+
+
+now we have a free space with approximately the same size as rootfs we will assign the free space with
+ext4 algorithm and name it rootfs2 and we also will change the name of the first to be rootfs1
+
+
+
+
+![Screenshot from 2024-07-25 02-57-39](https://github.com/user-attachments/assets/7bbbac59-3dcf-4237-abcf-19f9022b4369)
+
+
+And the final structure of the sd card will be:
+
+
+
+
+![Screenshot from 2024-07-25 02-58-35](https://github.com/user-attachments/assets/4974583e-856e-4cf7-9b8e-0dc75e1c2fa4)
+
+
+
+But the new rootfs is empty so we have to copy the files in the stagging area into it
+
+```
+sudo cp -r rootfs/* /media/saker/rootfs2
+```
+
+
+We also will make a flag or indicator in each rootfs to inform us which rootfs we are accessing now
+   1- in rootfs1
+      ```
+      sudo touch rootfs1
+      ```
+   2- in rootfs2
+      ```
+      sudo touch rootfs2
+      ```
+
+
+
+![Screenshot from 2024-07-25 03-03-30](https://github.com/user-attachments/assets/ef6c1cfd-4fa4-4d27-82ac-d9ad24cd53d6)
+
+
+
+
+![Screenshot from 2024-07-25 03-03-49](https://github.com/user-attachments/assets/cb57f9b5-a6f8-407a-a830-58121ba9bc7d)
+
+
+
+
+
+
+
+Now we are done preparing and let's dive into the task itself
+
+
+
+
+
