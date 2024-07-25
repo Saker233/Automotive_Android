@@ -236,10 +236,153 @@ We also will make a flag or indicator in each rootfs to inform us which rootfs w
 
 
 
-
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Now we are done preparing and let's dive into the task itself
+
+
+First thing we need to prepare our script which will handle the user input and the switch of filesystem
+
+
+We will go under our stagging rootfs
+
+```
+cd ~/rootfs
+
+sudo touch boot_manager.sh
+
+sudo nano boot_manager.sh
+
+```
+and we will wirte our script
+
+```
+
+#!/bin/bash
+
+echo "Choose the root filesystem to boot:"
+echo "1) RootFS1"
+echo "2) RootFS2"
+read -p "Enter choice [1-2]: " choice
+
+case "$choice" in
+    1)
+        ROOTFS="/mnt/rootfs1"
+        ;;
+    2)
+        ROOTFS="/mnt/rootfs2" 
+        ;;
+    *)
+        echo "Invalid choice"
+        exit 1
+        ;;
+esac
+
+echo "Switching to $ROOTFS..."
+chroot "$ROOTFS"
+
+```
+
+
+
+![Screenshot from 2024-07-25 16-05-58](https://github.com/user-attachments/assets/1f1965e5-8aa6-4c23-93f9-b770eb64c27e)
+
+
+
+then our initramfs is ready and we will create its image to be run in QEMU
+
+
+```
+cd ~/rootfs
+find . | cpio -H newc -ov --owner root:root > ../initramfs.cpio
+cd ..
+gzip initramfs.cpio
+mkimage -A arm -O linux -T ramdisk -d initramfs.cpio.gz uRamdisk
+
+
+```
+And we will will copy our uRamdisk into boot partition of virtual SD Card
+
+
+```
+sudo cp uRamdisk /media/saker/boot1
+
+```
+
+
+Then we launch QEMU
+
+
+```
+sudo qemu-system-arm -M vexpress-a9 -nographic -net nic -net tap,script=./script_new.sh -kernel ./u-boot -sd ~/sd.img
+
+
+```
+
+
+in u-boot we will initialize our kernel // dtb // initramfs and then boot
+
+```
+fatload mmc 0:1 $kernel_addr_r zImage
+fatload mmc 0:1 $fdt_addr_r vexpress-v2p-ca9.dtb
+fatload mmc 0:1 $initramfs uRamdisk
+
+bootz $kernel_addr_r $initramfs $fdt_addr_r
+
+```
+
+
+then initramfs will launch easily
+
+Untill now we didnt do anything differ from the first task but here is the new thing
+
+![Screenshot from 2024-07-25 16-11-48](https://github.com/user-attachments/assets/ffe1b24a-b88f-4190-af42-335f0c620be3)
+
+
+
+We will notice our script is appearing here and it's exeutable but the initramfs cant see all the parttiotions of the sd card
+
+
+we will make directories for them and mount them
+
+
+```
+mount -t devtmpfs dev /dev
+
+mkdir mnt/boot
+mkdir mnt/rootfs1
+mkdir mnt/rootfs2
+
+mount -t ext4 /dev/mmcblk0p1 /mnt/boot
+mount -t ext4 /dev/mmcblk0p2 /mnt/rootfs1
+mount -t ext4 /dev/mmcblk0p3 /mnt/rootfs2
+
+```
+
+now all the partiotions of the sd card are mounted under /mnt
+
+
+we will execute our script
+
+
+
+![Screenshot from 2024-07-25 16-14-14](https://github.com/user-attachments/assets/3602add4-bf2c-4585-aa3a-ed84d79d9c3f)
+
+
+
+
+We will chose the second rootfs
+
+
+![Screenshot from 2024-07-25 16-14-36](https://github.com/user-attachments/assets/93985435-6528-4bc5-9077-d3cb3a0333e5)
+
+
+
+
+Congratulations ... Now we are in the second rootfs and we opened a shell in it to do whatever you want
+
+
 
 
 
