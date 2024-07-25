@@ -380,6 +380,14 @@ We will chose the second rootfs
 
 
 
+
+
+
+
+![Screenshot from 2024-07-25 16-15-07](https://github.com/user-attachments/assets/fca98bad-3060-4621-b753-32d809ee8c62)
+
+
+
 Congratulations ... Now we are in the second rootfs and we opened a shell in it to do whatever you want
 
 
