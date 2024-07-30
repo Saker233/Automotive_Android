@@ -50,5 +50,39 @@ Usually the actual work is done by shell scripts which by convention are placed 
 
 
 
-nit begins by reading /etc/inittab this conatins a list of programs to run one per line with the format -> <id>::<action>:<program>
+init begins by reading /etc/inittab this conatins a list of programs to run one per line with the format -> <id>::<action>:<program>
+
+
+id: This is the controlling Terminal for the command 
+action: This is the conditions to run this command, as shown in the following paragraph program: This is the program to run
+
+
+
+## SystemV
+
+
+The BusyBox init not really used nowadays due to its very limitations
+
+But what are the limitation of it ?
+
+Let's first imagine a secenario if we have
+	1- bluetooth initialization
+ 	2- WIFI inititalzation
+  	3- Ethernet inititalzation
+   	4- ETC.....
+
+We need sometimes to initialize one of them and other times 2 of them and other times the Full functionalioty
+But in BusyBox we cant do that -> we can initialize them all or not inititalzing anything
+
+That concept of configuration called "Run level" in some specific Run Level we need some functionality and other Run level we need another functionalioty
+
+We have migrated to that concept for 2 Reasons
+	1- CPU utilization -> to not add a hassle to the CPU with some addition processes I dont need it at the time like the GUI process
+ 	2- RAM Usage -> Any addition process opens a stack frame in the RAM and if I don't need that process so I'm consuming memory for nothing
+
+
+## System V for the rescue!
+
+In System V we have several modes (Run Levels) each one of them has its own init process (we will discus how in a matter of time)
+
 
