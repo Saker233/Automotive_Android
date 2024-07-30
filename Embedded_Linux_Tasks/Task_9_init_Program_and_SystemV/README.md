@@ -220,6 +220,137 @@ So, to summarize System V:
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+## Task: Implement two runlevels , start daemon in one level and kill it when move to another
+
+
+We will create a script first for the daemon application itself
+
+So, under /etc/init.d/daemonapp
+
+```
+#! /bin/sh
+case "$1" in
+      start)
+           echo "Starting deamonapp........."
+           start-stop-daemon -S -n deamonapp -a /bin/deamonapp &
+           ;;
+     stop)
+           echo "Stopping deamonapp........."
+           start-stop-daemon -K -n deamonapp
+           ;;
+     *)
+           echo "Usage: $0 {start|stop}"
+           exit 1
+esac
+exit 0
+
+```
+
+This script is simple, if it gets start option then it will run 
+```
+start-stop-daemon -S -n deamonapp -a /bin/deamonapp &
+```
+This means that we will start this application as a daemon, whih is under /bin/ (we didn't create it but we will)
+
+if it gets stop option then it will run
+
+```
+start-stop-daemon -K -n deamonapp
+```
+
+Simply stop the application
+
+```
+chmod +x deamonapp 
+```
+
+
+We will create our 2 run levels under /etc/
+
+```
+mkdir rc2.d
+
+mkdir rc3.d
+
+```
+
+So we will make our softlinks, rc2.d will start the application and rc3.d will stop the application
+
+```
+cd /etc/rc2.d
+ln -s /etc/init.d/deamonapp S01deamonapp.sh
+
+```
+
+
+
+![Screenshot from 2024-07-30 15-52-14](https://github.com/user-attachments/assets/1640b1ed-5d0a-40c7-a874-f18803319b1c)
+
+
+
+
+
+And rc3.d will stop the deamonapp
+
+```
+cd /etc/rc3.d
+ln -s /etc/init.d/deamonapp K01deamonapp.sh
+
+```
+
+
+
+![Screenshot from 2024-07-30 15-53-15](https://github.com/user-attachments/assets/86154357-42bb-44a1-a087-f6467826b504)
+
+
+
+
+Remember, Untill Now we didn't create our application yet :D
+
+So to create the deamonapp under /bin
+
+```
+cd /bin
+
+touch deamonapp
+
+chmod +x deamonapp
+
+```
+
+
+
+
+
+![Screenshot from 2024-07-30 15-54-56](https://github.com/user-attachments/assets/d190279b-0f81-4364-be48-ec30436044f9)
+
+
+
+
+
+
+```
+vi deamonapp
+```
+
+
+```
+#!/bin/sh
+while true
+     do
+         echo "Daemonapp is running!" >> /tmp/daemon.test
+         sleep 10
+     done
+
+```
+
+
+Now we have already created the application itself which will run in the background as a daemon
+
+
+The last step is to create our rc.c script under /etc/init.d/rc.c
+
+
 
 
 
