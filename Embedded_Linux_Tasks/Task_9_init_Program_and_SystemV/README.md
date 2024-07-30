@@ -83,6 +83,60 @@ We have migrated to that concept for 2 Reasons
 
 ## System V for the rescue!
 
-In System V we have several modes (Run Levels) each one of them has its own init process (we will discus how in a matter of time)
+In System V we have several modes (Run Levels) each one of them has its own init process (we will discuss how in a matter of time)
+
+
+0 -> shutdown
+1 -> single user
+2 -> multi user without network
+3 -> multi user
+4 -> user defined
+5 -> GUI
+6 -> Reset
+
+So, How to make each run level?
+
+We have the directory init.d which is under /etc/ which has all the scripts for different initialization
+
+
+
+
+![Screenshot from 2024-07-30 14-46-28](https://github.com/user-attachments/assets/d039a88a-a263-4852-b543-2663fa1c4ee3)
+
+
+
+This is the inittab in System V after we build our Buildroot in System V
+
+
+we will notice this command
+
+```
+rcS:12345:wait:/etc/init.d/rcS
+
+
+```
+
+This will initialize our 1,2,3,4,5 run levels through the script rcS
+
+but what is that script ?
+
+this is script is located under -> /etc/init.d/rcS
+
+
+![Screenshot from 2024-07-30 14-49-17](https://github.com/user-attachments/assets/a49b7fa4-de01-4db0-8c0b-45b0b3428a83)
+
+
+
+
+This script will loop on all the other initialization beside rcS and decide to start them or stop them 
+
+
+
+![Screenshot from 2024-07-30 14-51-36](https://github.com/user-attachments/assets/5e69a621-5c57-47c3-90b8-444745827f39)
+
+
+
+
+
 
 
