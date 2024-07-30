@@ -1,4 +1,4 @@
-# Starting Up -The init Program
+# Starting Up - The init Program
 
 Now we have finally started our kernel and the rootfs and accessed a shell
 
@@ -134,6 +134,90 @@ This script will loop on all the other initialization beside rcS and decide to s
 
 ![Screenshot from 2024-07-30 14-51-36](https://github.com/user-attachments/assets/5e69a621-5c57-47c3-90b8-444745827f39)
 
+
+
+This all the options we can do to each initialization scripts (Start - Stop - Restart)
+
+
+
+
+
+![Screenshot from 2024-07-30 14-54-20](https://github.com/user-attachments/assets/c1ff2b71-818a-487b-9166-c39952fd9fec)
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+This is all fine, but, how we can manually make a customized run level ?
+
+under /etc/
+
+we will create our different run levels
+
+```
+mkdir /etc/rc1.d
+
+mkdir /etc/rc2.d
+
+mkdir /etc/rc3.d
+```
+
+Each run level has its own folder
+
+So, in run level 1 we don't need tftp but we need ssh (For example and illustration only not applicalple example)
+
+So, we will make soft link for both of them but the soft link for network will be start with K and the ssh start with S
+
+K -> Kill
+S -> Start
+
+```
+ln -s /etc/init.d/network k01tftpd-hpa
+
+ln -s /etc/init.d/ssh s02ssh
+```
+
+
+what that numbers after s and k ?
+it's the priority which one will executed first the highest priority is 00
+
+
+So, we will go through each run level we made with our own customized application S for start K for kill
+
+
+
+![Screenshot from 2024-07-30 15-03-19](https://github.com/user-attachments/assets/647be57b-2cb1-4ed9-8acd-14670ce3e6d4)
+
+
+
+NOTE: we only make soft links to scripts not to the original application because the original application is under /usr/bin
+
+
+Now we have our own run level with its S's and K's
+
+After that we will create a script rc.c to execute each run level
+
+
+```
+switch (run level)
+
+1)
+parsing for any file starts with k with for loop and when finding it it stop it
+
+another for loop for any file starts by s with respect to the priority and when finding it we start it
+
+```
+
+
+So, to summarize System V:
+	1- The kernel will firslty boots on "init" which is a System V init
+ 	2- init will go and parse the inittab
+  	3- The inittab has sysinit action which will mount everything from rcS then run init 2 and get back to init again
+   	4- init 2 this time will not execute sysinit action but will execute the wait action which will run rc.c script to initialize every script we
+    		made to it a soft link, will start everything with S and kill everything with K, According to the run level we gave before the wait action
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
