@@ -348,7 +348,135 @@ while true
 Now we have already created the application itself which will run in the background as a daemon
 
 
-The last step is to create our rc.c script under /etc/init.d/rc.c
+The last step is to create our rc.c script under /etc/init.d/rc.c and edit inittab to make it executing this script
+
+```
+cd /etc/init.d
+
+touch rc.c
+
+vi rc.c
+```
+and add this script
+
+```
+#!/bin/sh
+# Check if one argument is provided
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <runlevel>"
+    exit 1
+fi
+# Define the folder path based on the argument
+folder="rc$1.d"
+# Kill scripts starting with K
+for i in /etc/$folder/K??* ;do
+     # Ignore dangling symlinks (if any).
+     [ ! -f "$i" ] && continue
+     case "$i" in
+        *.sh)
+            # Source shell script for speed.
+            (
+                trap - INT QUIT TSTP
+                set stop
+                . $i
+            )
+            ;;
+        *)
+            # No sh extension, so fork subprocess.
+            $i stop
+            ;;
+    esac
+done
+# Start scripts starting with S
+for i in /etc/$folder/S??* ;do
+     # Ignore dangling symlinks (if any).
+     [ ! -f "$i" ] && continue
+     case "$i" in
+        *.sh)
+            # Source shell script for speed.
+            (
+                trap - INT QUIT TSTP
+                set start
+                . $i
+            )
+            ;;
+        *)
+            # No sh extension, so fork subprocess.
+            $i start
+            ;;
+    esac
+done
+
+```
+
+```
+chmod +x rc.c
+```
+
+
+
+
+
+
+
+![Screenshot from 2024-07-30 16-05-37](https://github.com/user-attachments/assets/d8aeeefe-08e3-4157-b9df-579b9cf37621)
+
+
+
+
+Now we need to edit inittab to make it executing this script
+
+
+
+
+
+![Screenshot from 2024-07-30 16-08-24](https://github.com/user-attachments/assets/bb3cab3f-ca32-44ca-a142-6e923f5ea6a5)
+
+
+
+
+```
+rc2:2:wait:/etc/init.d/rc.c 2                                 
+                                                              
+rc3:3:wait:/etc/init.d/rc.c 3
+
+```
+
+and to switch to the run level we make
+
+```
+init 2
+
+```
+
+
+![Screenshot from 2024-07-30 16-27-18](https://github.com/user-attachments/assets/9c32e7c5-9d6e-4289-a9d1-1a23f7317e89)
+
+This how we run the app
+
+
+
+![Screenshot from 2024-07-30 16-27-47](https://github.com/user-attachments/assets/2ef8f877-04f6-4c78-be5c-1b87ebd97529)
+
+
+
+This is we stop the app
+
+
+And proof of working is that logs file we created in the application which the pplication print its function on it under /tmp/daemon.test
+
+
+
+
+
+
+
+
+
+![Screenshot from 2024-07-30 16-29-14](https://github.com/user-attachments/assets/183f91d2-2594-4aaa-ad73-67b86e73e501)
+
+
+
 
 
 
