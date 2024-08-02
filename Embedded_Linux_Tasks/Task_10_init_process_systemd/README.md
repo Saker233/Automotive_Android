@@ -80,3 +80,23 @@ First let's indroduce the types of Unit and it's determined with the suffix of t
 
 
 
+Let's take the Service Unit as an example to see what is the structure of the Unit
+
+
+```
+"Header Section"
+[Unit]
+Description = ""
+Documentaion = ""
+SourcePath = ""
+After -> we give it another unit file
+Before -> we give it another unit file
+Wants -> we give it another unit file
+```
+
+## After
+The After directive specifies that the current unit should be started after the specified units. It only affects the ordering of the units and does not imply a dependency; the specified units are not pulled in automatically.
+
+
+## Before
+The Before directive is the opposite of After. It specifies that the current unit should be started before the specified units. Like After, it only affects the ordering and does not imply a dependency.
