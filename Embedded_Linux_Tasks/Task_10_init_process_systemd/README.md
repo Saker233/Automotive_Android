@@ -187,4 +187,65 @@ RestartSec=5
 This is real example for a Service
 
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+This is all fine theortical explanation of systemd, But how to actually create a service ?
 
+
+## Creating a Service
+We will create a service called -> myservice.service
+
+```
+cd /etc/systemd/system
+sudo touch myservice.service
+sudo nano  myservice.service
+```
+
+and its content will be
+
+```
+[Unit]
+	Wants=mynetwork.network
+
+[Service]
+	Type=simple
+	ExecStart=/usr/bin/ping 192.168.1.10 -c 3
+	Restart=always
+	RestartSec=3
+	WorkingDirectory=/usr/bin
+
+[Install]
+	WantedBy=graphical.target
+
+```
+and we will create the other network which waneted
+
+```
+sudo touch mynetwork.network
+sudo nano mynetwork.network
+```
+
+```
+[Unit]
+	Name="wlp0s20f3"
+
+[Network]
+	Address=192.168.100.58/24
+
+```
+
+Then we will start our service -> myservice.service
+
+```
+sudo systemctl start myservice.service
+
+systemctl enable myservice.service
+```
+and to see the logs
+
+```
+journalctl -u myservice.service
+
+```
+
+
+![Screenshot from 2024-08-02 08-42-52](https://github.com/user-attachments/assets/4a806ce5-a010-4763-85fc-2634706c8df9)
