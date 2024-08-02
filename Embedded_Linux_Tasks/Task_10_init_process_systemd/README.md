@@ -78,6 +78,15 @@ First let's indroduce the types of Unit and it's determined with the suffix of t
 | Network | .network| Describes the configuration of a network interface. It includes settings for configuring IP addresses, routes, DNS servers, These files are typically located in /etc/systemd/network/ |
 
 
+But Before deep dive in the Unit concept let's first tell the different types of the processes in linux system
+
+| Type of Process | Description |
+|----------|----------|
+| Foreground | A foreground process is a process that is started by the user from a terminal session and takes control of the terminal. The terminal waits for the process to complete before allowing further input. Users interact directly with foreground processes |
+| Background | A background process is a process that runs independently of the terminal session. It allows the user to continue using the terminal while the process runs in the background, Like if you open google chrome and minimize it  |
+| Orphan | An orphan process is a process whose parent has terminated or exited. Orphan processes are adopted by the init process (PID 1), which becomes their new parent. The init process is responsible for cleaning up orphan processes. |
+| Zombie | A zombie process is a process that has completed execution but still has an entry in the process table. This occurs because the process's parent has not yet read the child's exit status using the wait() system call. The process is in a "zombie" state until the parent process reads its status and reaps the zombie process. |
+| Daemon | A daemon process is a background process that is not associated with a terminal session. It typically starts at boot time and runs continuously, providing services to other processes or performing specific tasks. Daemons are often used for server tasks, like handling network requests or managing hardware. |
 
 
 Let's take the Service Unit as an example to see what is the structure of the Unit
@@ -92,6 +101,14 @@ SourcePath = ""
 After -> we give it another unit file
 Before -> we give it another unit file
 Wants -> we give it another unit file
+
+[Service]
+		Type
+		ExecStart = <The application to run, only one on the whole Unit>
+		ExecStop = <Run this application when you send stop signal to the servic>
+		workdir = /usr/bin
+		Restart= on-failure // always
+		RestartSec = 3
 ```
 
 ## After
@@ -109,3 +126,8 @@ The Wants directive specifies a weak dependency. If the unit listed in Wants is 
 
 ## Requires
 The Requires directive specifies a strong dependency. If the unit listed in Requires is not available or fails to start, the current unit will also fail.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Type
+
