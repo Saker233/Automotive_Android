@@ -100,3 +100,12 @@ The After directive specifies that the current unit should be started after the 
 
 ## Before
 The Before directive is the opposite of After. It specifies that the current unit should be started before the specified units. Like After, it only affects the ordering and does not imply a dependency.
+
+
+## Wants
+The Wants directive specifies a weak dependency. If the unit listed in Wants is available, it will be started, but if it fails or is not available, it will not cause the current unit to fail.
+
+
+
+## Requires
+The Requires directive specifies a strong dependency. If the unit listed in Requires is not available or fails to start, the current unit will also fail.
