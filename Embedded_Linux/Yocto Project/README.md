@@ -68,3 +68,38 @@ The main concept was we get to the tool some inputs and that inputs called layer
 The bitbake will read that inputs and know its dependencies and clone each one and run the scripts on the cloned data then the output will be the desired image
 
 
+Untill now we are not talking on any specific hardaware all targets will share the same steps
+
+
+So, we now have to clone also the board support package (BSP) which is the layer which will configure our target architecture
+
+
+
+Until now we have 2 types of layers
+
+  1- BSP -> hardware space
+
+  2- Application layer -> user space
+
+
+
+The cross compiler is considred as BSP
+
+
+In general the layers will be only one BSP and unlimited number of Applications
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Yocto
+
+This is all fine and open embedded can actually get the job done, But what is the importance of yocto and why this all fame ?
+
+Yocto is another community who made the documentation on how to use Open Embedded, Yocto itself doeesnt create images but the open embedded tools dooes
+
+So, Yocto only tells you the way on how to use the open embedded tool effieciently
+
+But also, Yocto created some new layers to make the job easier
+
+  1- meta-poky -> some BSPs
+
+  2- meta-yocto-bsp -> some application layers
