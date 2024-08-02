@@ -12,6 +12,7 @@ How we get the rootfs ? simply by configuring the BusyBox tool which auto genera
 
 
 Now we have
+
   1- Cross compiler
   
   2- Bootloader
@@ -29,6 +30,7 @@ Or doing checksum calculations on the rootfs to make sure of the data integrity 
 
 
 After that we studied the init process which was a crucial topic and essential thing in anu linux booting process and we had 3 types
+
   1- BusyBox init
   
   2- System V
