@@ -77,8 +77,20 @@ First let's indroduce the types of Unit and it's determined with the suffix of t
   
   6- Target    -> .target    -> Groups of units, Targets are similar to runlevels in SysV init systems, and they can bring the system to a specific state or coordinate the startup of multiple units
   
-  7- Network   -> .network   -> Describes the configuration of a network interface. It includes settings for configuring IP addresses, routes, DNS servers, These files are typically located in /etc/systemd/network/.
+  7- Network   -> .network   -> Describes the configuration of a network interface. It includes settings for configuring IP addresses, routes, DNS servers, These files are typically located in /etc/systemd/network/
   
+
+
+| Name | Suffix | Description |
+|----------|----------|----------|
+| Service | .service | Defines a system service. This is the most common type of unit. It includes configuration for starting, stopping, and managing a service|
+| Socket | .socket | Describes a socket that systemd manages. Socket units create file descriptors that services can listen to, and they usually have a corresponding |
+| Device| .device  | Represents a device that is recognized by the kernel and exposed in the sysfs or udev device tree |
+| Mount | .mount| Controls a mount point in the file system. These units are created automatically from /etc/fstab entries but can also be defined manually |
+| Automount | .automount | Manages an automount point that mounts a file system automatically when accessed. It is usually used in combination with a .mount unit |
+| Target | .target | Groups of units, Targets are similar to runlevels in SysV init systems, and they can bring the system to a specific state or coordinate the startup of multiple units |
+| Network | .network| Describes the configuration of a network interface. It includes settings for configuring IP addresses, routes, DNS servers, These files are typically located in /etc/systemd/network/ |
+
 
 
 
