@@ -13,9 +13,13 @@ How we get the rootfs ? simply by configuring the BusyBox tool which auto genera
 
 Now we have
   1- Cross compiler
+  
   2- Bootloader
+  
   3- Kernel Image
+  
   4- Rootfs
+  
 
 
 And that are the main components of any embedded linux system and we have already done that and worked proprely as it should
@@ -26,8 +30,11 @@ Or doing checksum calculations on the rootfs to make sure of the data integrity 
 
 After that we studied the init process which was a crucial topic and essential thing in anu linux booting process and we had 3 types
   1- BusyBox init
+  
   2- System V
+  
   3- systemd
+  
 
 
 and we illustrated each one of them briefly 
