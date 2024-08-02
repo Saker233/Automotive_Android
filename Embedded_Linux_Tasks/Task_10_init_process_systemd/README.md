@@ -130,4 +130,61 @@ The Requires directive specifies a strong dependency. If the unit listed in Requ
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## Type
+We have 3 common types of the Type
+	1- Simple
+ 		the application is coupled with the service, if we send kill to the service the application also will be killed
+	2- forking
+ 		the application is not coupled with the service and if we stop the service the application can still run alone 
+   	3- onehsot
+    		Any application that run only one time and straight forward doesn't have any while loop or something
+usually runs to initialize something then kill itself and stop the service
+
+
+So, when we use systemctl stop with simple it also kill the application
+
+When we use systemctl stop with forking the application is still running 
+
+
+The daemon processes print its output to a file called "journalctl"
+
+
+## ExecStart
+
+The ExecStart directive specifies the command to execute when starting the service. This is the main process of the service
+Equals to -> systemclt start
+
+
+## ExecStop
+The ExecStop directive specifies the command to execute when stopping the service. It is used to gracefully shut down the service
+Equals to -> systemctl stop
+
+
+
+## Restart
+The Restart directive defines the restart policy for the service. It determines under which conditions systemd will attempt to restart the service if it stops
+
+It could be:
+	1- no         -> Do not restart the service automatically
+ 	2- always     -> Always restart the service regardless of the exit status
+  	3- on-success -> Restart the service only if it exits with a successful exit status (0)
+   	4- on-faliure -> Restart the service if it exits with a non-zero exit status, is terminated by a signal, or times out
+
+
+## RestartSec
+
+The RestartSec directive specifies the time to wait before attempting to restart the service after it has been stopped. This value is specified in seconds
+
+```
+[Service]
+Restart=on-failure
+RestartSec=5
+```
+
+![Screenshot from 2024-07-28 21-16-07](https://github.com/user-attachments/assets/289cbae4-bdcd-4abd-a634-bb21e4e6ac7d)
+
+
+
+This is real example for a Service
+
+
 
