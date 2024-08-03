@@ -112,11 +112,59 @@ Then we will create our Makefile
 .PHONY: clean
 .PHONY: Demoapp
 
-embeddedinn: Demoapp.cpp
+Demoapp: Demoapp.cpp
     $(CC) -o '$@' '$<'
 
 clean:
     -rm Demoapp
+
+```
+
+
+This will simply tell the buildroot how to build this package
+
+
+```
+sudo nano Config.in
+```
+
+
+```                                                         Config.in                                                                      
+config BR2_PACKAGE_DEMOAPP
+    bool "DemoAPP"
+    help
+        Demoapp package.
+
+        https://github.com/Saker233/Automotive_Android/tree/main/Embedded_Linux/Embedded_Linux_Tasks/Task_11_Adding_Custom_Package_Into_Buildroot
+
+```
+
+
+```
+sudo nano Demoapp.mk
+
+```
+
+```
+################################################################################
+#
+# Demoapp package  MOHAMED SAKER
+#
+################################################################################
+
+DEMOAPP_VERSION = 1.0
+DEMOAPP_SITE = package/Demoapp/src
+DEMOAPP_SITE_METHOD = local# Other methods like git,wget,scp,file etc. are also available.
+
+define DEMOAPP_BUILD_CMDS
+    $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D)
+endef
+
+define DEMOAPP_INSTALL_TARGET_CMDS
+    $(INSTALL) -D -m 0755 $(@D)/Demoapp  $(TARGET_DIR)/usr/bin
+endef
+
+$(eval $(generic-package))
 
 ```
 
