@@ -169,4 +169,35 @@ $(eval $(generic-package))
 ```
 
 
+Now the job is done let's get into the menuconfig
+
+
+```
+cd ..
+
+cd ..
+
+make menuconfig
+
+```
+
+
+
+![Screenshot from 2024-08-04 02-16-13](https://github.com/user-attachments/assets/c9f9de72-8860-4ff8-b413-999f8b605294)
+
+
+
+
+
+
+
+![Screenshot from 2024-08-04 02-16-28](https://github.com/user-attachments/assets/c832a08b-2a23-42d6-adf3-5d2b8a14ea10)
+
+
+
+Now we can see the DemoApp and we are free to add it or not
+
+
+
+
 
