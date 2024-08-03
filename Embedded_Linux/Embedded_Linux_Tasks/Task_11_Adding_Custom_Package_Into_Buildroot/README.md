@@ -46,7 +46,7 @@ Now we understanded the anatomy of the buildroot package, Now it's time to do ou
 firstly we will create a multithreading application in CPP
 
 
-```
+
 
 
 Simple multithreading application to print hello world in 3 threads even we didn't use mutex or semaphore
