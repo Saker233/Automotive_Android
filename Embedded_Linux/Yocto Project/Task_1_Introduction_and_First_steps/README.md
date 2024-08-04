@@ -100,6 +100,23 @@ So, Yocto only tells you the way on how to use the open embedded tool effiecient
 
 But also, Yocto created some new layers to make the job easier
 
-  1- meta-poky -> some BSPs
+They created a repo called "Poky" which has
 
-  2- meta-yocto-bsp -> some application layers
+  1- bitbake
+
+  2- meta-poky
+
+  3- meta-yocto-bsp
+
+  4- meta-core
+
+  5- meta-skeleton
+
+
+
+## Bitbake
+
+BitBake is a build tool that is used by the Yocto Project to build packages and images.
+It is similar to tools like make but designed specifically for embedded Linux and the needs of the Yocto Project.
+BitBake parses recipes (files with .bb extension) to determine how to build software components, managing dependencies and fetching sources, compiling, and creating packages
+
