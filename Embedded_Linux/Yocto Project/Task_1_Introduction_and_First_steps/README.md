@@ -197,8 +197,102 @@ But generally the steps will be:
   6- Package Feeder -> has 2 paths to go 1- Image if we don't need the debugging symbols 2- SDK if we need the debugging symbols
 
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Yocto practical
+
+We will work with the poky version kirkstone
+
+but firslty if we lack some dependencies we will install them first
+
+```
+sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 python3-subunit zstd liblz4-tool file locales libacl1
+sudo locale-gen en_US.UTF-8
+```
+Then we will colne the POKY
+
+
+```
+git clone -b kirkstone https://github.com/yoctoproject/poky.git
+
+```
+
+```
+cd poky
+```
 
 
 
+![Screenshot from 2024-08-04 03-37-51](https://github.com/user-attachments/assets/8aa7fdb7-e2ee-45f0-a416-01293c20e574)
+
+
+
+
+![Screenshot from 2024-08-04 03-38-39](https://github.com/user-attachments/assets/7bf817f5-b666-40af-9bbc-4f315b9ba1ed)
+
+
+```
+source oe-init-build-env 
+
+```
+
+This will set up the build environment for your Yocto build. It initializes various environment variables and sets up paths so you can start building your project
+
+
+
+
+![Screenshot from 2024-08-04 03-44-45](https://github.com/user-attachments/assets/d489a071-3d26-4b4e-a6fa-dfe4507a0935)
+
+
+
+
+then we will edit our local.conf file
+
+```
+sudo nano local.conf
+```
+
+
+
+
+![Screenshot from 2024-08-04 04-12-55](https://github.com/user-attachments/assets/503f07c6-5f92-4063-80ac-9d12ed0d0971)
+
+
+
+
+
+```
+MACHINE ??= "qemux86-64"
+
+BB_NUMBER_THREADS ?= "8"
+PARALLEL_MAKE ?= "-j 8"
+```
+
+
+
+
+Then all we need to do is build the image
+
+```
+bitbake core-image-minimal
+
+```
+
+```
+runqemu qemux86-64 nographic
+```
+
+![Screenshot from 2024-08-04 13-45-06](https://github.com/user-attachments/assets/fa81b802-1a62-4f72-b93a-79cfbba341a6)
+
+
+
+
+
+
+
+
+
+
+
+![Screenshot from 2024-08-04 13-44-51](https://github.com/user-attachments/assets/b3adf4a3-4723-4c0c-8810-d19fffcb84e5)
 
 
