@@ -120,3 +120,42 @@ BitBake is a build tool that is used by the Yocto Project to build packages and 
 It is similar to tools like make but designed specifically for embedded Linux and the needs of the Yocto Project.
 BitBake parses recipes (files with .bb extension) to determine how to build software components, managing dependencies and fetching sources, compiling, and creating packages
 
+
+
+
+## meta-poky
+
+meta-poky is a reference distribution layer provided by the Yocto Project. 
+It includes configuration files, classes, and recipes to build a basic but fully functional Linux distribution. 
+It serves as a starting point and example for developers to create their own custom layers and distributions.
+
+
+
+
+## meta-yocto-bsp
+
+Board Support Package (BSP) layer provided by the Yocto Project. 
+It contains support for various hardware platforms, including configuration files and recipes specific to those platforms. 
+This layer helps in setting up the hardware-specific parts of the build process, such as kernel configurations and bootloader settings
+
+
+
+
+
+## meta-core
+
+contains the fundamental components and base recipes required to build a Linux distribution using the Yocto Project. 
+It includes essential packages, tools, and libraries that form the foundation of any Yocto-based build, like python which is essential to run the scripts
+
+
+
+## meta-skeleton
+
+template or example layer provided by the Yocto Project. It is intended to help developers create their own custom layers. 
+It includes sample recipes, configurations, and documentation that demonstrate best practices for developing custom layers and recipes
+
+
+
+
+
+
