@@ -156,6 +156,49 @@ It includes sample recipes, configurations, and documentation that demonstrate b
 
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Layers or Metadata
+
+
+what is the meaning of layers ?
+
+Layers are collections of recipes, configuration files, and other related files that are used by BitBake to build software. 
+Each layer can provide support for different aspects of the build process, such as hardware support, specific software packages, or custom configurations. 
+Layers allow developers to modularize and organize their build environment, making it easier to manage, maintain, and extend
+
+
+
+Let's now deep dive in the types of layers
+
+  1- User Configuration files -> Any file with the .conf file used to define various settings and variables that control the build process
+
+  2- Application files -> any file with the extension .bb  which is the recipe itself -> define how to build software packages. Each recipe provides the instructions for fetching, configuring, compiling, and packaging a particular piece of software
+
+
+  3- Classes -> Discussed Later
+
+
+
+So now the main concept is the bitbake will get its congiguration file (layers) as an input and he will parse them to know what he will actually do according to the recipe we gave
+
+
+But generally the steps will be:
+  1- Unpack -> Decompress -> Extracts the source code from the archives specified in the recipe -> will be in 'S' Directory
+
+  2- Patch -> If he has any modifications to the decopressed data before even processe it -> will be in 'S' Directory
+
+  3- Configure -> Prepares the source code for building by configuring it according to the target environment and build settings -> will be in 'S' Directory
+
+  4- Build -> Compiles the source code into executable binaries or libraries -> will be in 'B' Directory
+
+  5- Install -> Installs the compiled binaries, libraries, and other files into the appropriate directories for packaging -> will be in 'D' Directory
+
+  6- Package Feeder -> has 2 paths to go 1- Image if we don't need the debugging symbols 2- SDK if we need the debugging symbols
+
+
+
+
 
 
 
