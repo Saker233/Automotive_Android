@@ -172,6 +172,107 @@ myvar:remove = "5"
 # How to create a Layer ?
 
 
+If we want to create our own layer we should create it OUTSIDE of Poky and dont modify in the poky itself because it has license and this should ruin the software itself
+
+
+we will create a new layer called "meta_iti"
+
+
+Gratefully the bitbake won't leave us to create it from scratch and he has a template to do it
+
+
+```
+bitbake-layers create-layer ../meta_iti
+
+```
+
+
+
+
+
+
+![Screenshot from 2024-08-06 02-19-24](https://github.com/user-attachments/assets/c3865638-5eff-46a6-9217-2b3f19d399fd)
+
+
+
+
+
+Now bitbake already created the layer template for us and all we have to do is to modify it as our needs
+
+
+
+
+
+
+![Screenshot from 2024-08-06 02-20-31](https://github.com/user-attachments/assets/bcc2b0e1-bf65-4e71-92de-18228cbf768d)
+
+
+
+
+1- conf
+
+2- COPYING.MIT 
+
+3- README
+
+4- recipe-examples
+
+
+This is the files he created
+
+
+
+![Screenshot from 2024-08-06 02-21-42](https://github.com/user-attachments/assets/92a322e3-7a1f-408a-9cfd-f8731d920d6e)
+
+
+
+
+
+Under conf dir we have layer.conf which is the full descreiption to the whole layer
+
+
+
+
+![Screenshot from 2024-08-06 02-22-51](https://github.com/user-attachments/assets/55214c50-68fd-463e-925f-af698099824b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
