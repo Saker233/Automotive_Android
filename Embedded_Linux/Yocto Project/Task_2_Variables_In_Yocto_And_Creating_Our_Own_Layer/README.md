@@ -237,13 +237,23 @@ Under conf dir we have layer.conf which is the full descreiption to the whole la
 
 
 
+```
+LAYERDEPENDS_meta_iti = "core"
+```
+This means that this layer is depend on another layer which is the core layer
 
 
 
 
+```
+BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
+            ${LAYERDIR}/recipes-*/*/*.bbappend"
 
 
+```
 
+
+This variable which is "BBFILES" represent how to find your recipe inside your layer
 
 
 
