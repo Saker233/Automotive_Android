@@ -304,9 +304,29 @@ In Dynamic compilation we have 3 code blocks
 But in static .ko we don't have the exit code block because there is no exit from the first place and we dont have access to unload it from memory because its is the zImage itself
 
 So in static we only have
+
 	1- init
  	2- Code
 
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Device Drivers Categories
+
+
+1- Charachter Device
+
+	GPIO  // UART // SPI
+
+
+2- Block Device
+
+	Storage
+
+
+3- Network Device
+
+	WIFI // ETH
 
