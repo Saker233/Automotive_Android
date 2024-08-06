@@ -121,8 +121,97 @@ LKM doesn't have a main function because all the kernel space has only one main 
 
 
 
+1- Module Initialization
+
+That's a template the init function must return int and has void arguments
+```
+int mykernelInit(void)
+{
+
+}
+
+```
 
 
+2- Module Deinitialization
+
+
+```
+void myKernelDeinit(void)
+{
+
+}
+
+```
+
+But these 2 function are that we made and the kernel doesn't have any clue what are they
+
+
+So, We have to link them somehow to tell the kernel that these are the init and the deinit of the module
+
+
+So, Linux provide us with 2 function like macros to define each of them
+
+```
+module_init(mykernelInit);
+module_deinit(mykernelDeinit);
+```
+
+Full Code Example
+
+```
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/cdev.h>
+#include <linux/fs.h>
+#include <linux/proc_fs.h>
+
+/**********************   Code Section ****************************/
+
+ssize_t mywrite(struct file *files, const char __user *buff, size_t size, loff_t *loff)
+{
+    printk("Hello from write \n");
+
+    return size;
+}
+
+ssize_t myread(struct file *files, char __user *buff, size_t size, loff_t *loff)
+{
+    printk("Hello from read \n");
+
+    return 0;
+}
+
+const struct proc_ops proc_file_operations = {
+    .proc_read = myread,
+    .proc_write = mywrite};
+
+struct proc_dir_entry *proc_dir;
+
+static int mykernel_init(void)
+{
+
+    proc_create("google", 0666, NULL, &proc_file_operations);
+
+    /* print any thing you want in the dmesg*/
+    printk("Hello from kernel \n");
+
+    return 0;
+}
+
+static void mykernel_exit(void)
+{
+
+    proc_remove(proc_dir);
+    printk("Bye Kernel \n");
+}
+
+module_init(mykernel_init);
+module_exit(mykernel_exit);
+
+MODULE_LICENSE("GPL");
+
+```
 
 
 
