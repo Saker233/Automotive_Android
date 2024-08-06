@@ -93,3 +93,41 @@ In my case
 
 
 
+To find the kernel header in the rootfs it will be under
+
+```
+cd /usr/src/linux-headers-5.15.0-117-generic/include/
+```
+
+
+![Screenshot from 2024-08-06 22-33-28](https://github.com/user-attachments/assets/bf4feb2b-72b2-4765-bee9-8ca1926057d4)
+
+
+
+
+
+
+2- Code Section -> C code
+
+
+
+Linux has some restriction when you intefacing with its kernel, He gave you a template on how to use the drivers, if you want to use a function don't make one
+
+But use the one it provieded and if you want to make a variable dont make one but make instance of the struct he provide
+
+
+LKM doesn't have a main function because all the kernel space has only one main function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
