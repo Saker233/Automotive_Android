@@ -214,7 +214,82 @@ MODULE_LICENSE("GPL");
 ```
 
 
+After writing the driver we need to build it, So we will build it dynamically
 
+
+So, we have to write the makefile which will do the build job
+
+
+```
+touch Makefile
+
+nano Makefile
+
+```
+
+
+```
+obj-m = mydriver.o
+
+  
+  
+
+KDIR = /lib/modules/${shell uname -r}/build
+
+  
+
+all:
+
+	make -C ${KDIR} M=${shell pwd} modules
+
+  
+  
+
+clean:
+
+	make -C ${KDIR} M=${shell pwd} clean
+
+```
+Then we go the terminal and hit make and the building will be done and new files generated
+
+
+
+
+![Screenshot from 2024-08-06 22-50-38](https://github.com/user-attachments/assets/d128ea4d-62b9-47b6-9dc0-52094b5b939c)
+
+
+
+
+
+The file that matter is the -> mydriver.ko this is the LKM
+
+
+And we need to load it to RAM so we use
+
+```
+sudo insmod mydriver.ko
+
+```
+
+
+then we hit
+
+```
+dmesg
+
+```
+
+
+
+
+
+![Screenshot from 2024-08-06 22-52-11](https://github.com/user-attachments/assets/0497ebed-8502-4425-bb1f-c89369554db1)
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
