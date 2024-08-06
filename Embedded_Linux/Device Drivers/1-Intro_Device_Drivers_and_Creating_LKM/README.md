@@ -39,3 +39,57 @@ For Example: The security modules never compiled dynamically because I want it t
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Commands to add new kernel modules
+
+
+1- insmod -> to insert new module (has to be .ko)
+
+2- rmmod -> to remove a module
+
+3- modprobe -> more genric command to add or remove with the flag option specify what to do
+
+4- lsmod -> this will list all the dynmaically LKMs
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Why we need LKM ?
+
+
+1- To extend the linux functionality
+
+2- To increase the security
+
+3- To use a new filesystem
+
+4- To add new device drivers
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## How to write LKM (Syntax)
+
+
+1- Header Section
+
+
+Kernel headers are the .h in the Linux kernel source code that define the interface between the kernel and user-space applications. 
+These headers provide the necessary definitions and declarations for system calls and other kernel services that user-space applications and libraries need to interact with the kernel.
+
+
+first we need to know which linux version we are using to get the proper headers for it
+
+```
+uname -r
+```
+In my case
+
+```
+5.15.0-117-generic
+```
+
+
+
