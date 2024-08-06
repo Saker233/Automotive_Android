@@ -253,7 +253,129 @@ BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
 ```
 
 
-This variable which is "BBFILES" represent how to find your recipe inside your layer
+This variable which is "BBFILES" represent how to find your recipe inside your layer, and he is formatted to find any recipe under recipes-example
+
+
+So, If we created another directory to customize our own recipe it's gonna be found
+
+
+under recipes-example
+```
+mkdir my_recipe
+
+cd my_recipe
+
+touch saker.bb
+
+nano saker.bb
+```
+
+```
+DESCRIPTION = "Mohamed Saker created a Reicpe"
+LICENSE = "CLOSED"
+
+python do_display_banner() {
+    bb.plain("***********************************************");
+    bb.plain("*                                             *");
+    bb.plain("*  Welcome To Recipe By Mohamed Saker         *");
+    bb.plain("*                                             *");
+    bb.plain("***********************************************");
+
+```
+This is how we created our own recipe and now we will bitbake the 2 recipes 1- That the bitbake made for us 2- the one we created
+
+
+but first can't you see something is missing ?
+
+How bitbake knew if we created a recipe or not !
+
+
+So, first we need to notify the bitbake that he has got a new layer
+
+
+How to do that we go to poky again
+
+```
+cd poky
+
+
+cd build/conf
+
+ls
+```
+
+
+
+
+![Screenshot from 2024-08-06 02-58-20](https://github.com/user-attachments/assets/1f1e8757-b038-4a5b-89e7-ace7482d8812)
+
+
+
+
+
+And then enter bblayers.conf with you favourite editor
+
+
+
+
+![Screenshot from 2024-08-06 02-58-53](https://github.com/user-attachments/assets/f2cf71a9-48cc-4ddb-a3a9-8e54baa07a1e)
+
+
+
+
+and then add your layer path to BBLAYERS (NOTE: bitbake only gets absoulute paths)
+
+
+```
+BBLAYERS ?= " \
+  /home/saker/poky/meta \
+  /home/saker/poky/meta-poky \
+  /home/saker/poky/meta-yocto-bsp \
+  /home/saker/meta_iti \
+  "
+
+```
+
+save & exit
+
+
+
+we can ensure that our layer is now seen from bitbake
+
+
+```
+bitbake-layers show-layers
+```
+
+
+
+![Screenshot from 2024-08-06 03-01-10](https://github.com/user-attachments/assets/513bddf5-b001-44a4-b00a-3a97bcd9ec56)
+
+
+
+
+now we have the layer seen
+
+
+We could now execute the layer itself with different recipes
+
+
+1- with the default recipe
+
+
+```
+bitbake example
+
+```
+
+
+Then he will go and parse the layer.conf and gets to you the configuration
+
+
+
+
+
+![Screenshot from 2024-08-06 03-03-16](https://github.com/user-attachments/assets/db370a98-e7ff-4fbc-8ab3-9cfab2219687)
 
 
 
@@ -266,14 +388,20 @@ This variable which is "BBFILES" represent how to find your recipe inside your l
 
 
 
+2- With our own recipe which its name was 
+
+
+```
+bitbake saker
+
+```
 
 
 
 
 
 
-
-
+![Screenshot from 2024-08-06 03-11-54](https://github.com/user-attachments/assets/7c89906a-711b-4033-9b6f-5d2412363fcc)
 
 
 
