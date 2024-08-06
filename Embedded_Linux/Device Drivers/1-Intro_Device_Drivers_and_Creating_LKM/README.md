@@ -214,10 +214,6 @@ MODULE_LICENSE("GPL");
 ```
 
 
-After writing the driver we need to build it, So we will build it dynamically
-
-
-So, we have to write the makefile which will do the build job
 
 
 ```
@@ -226,6 +222,119 @@ touch Makefile
 nano Makefile
 
 ```
+
+```
+#include <linux/module.h>
+#include <linux/init.h>
+#include <linux/cdev.h>
+#include <linux/fs.h>
+#include <linux/proc_fs.h>
+
+
+```
+These headers include necessary functions and definitions for kernel modules, initialization and cleanup functions, character device operations, and proc filesystem operations
+
+
+
+```
+ssize_t mywrite(struct file *files, const char __user *buff, size_t size, loff_t *loff)
+{
+    printk("Hello from write \n");
+    return size;
+}
+
+
+```
+This function is called when a write operation is performed on the proc file. 
+It prints "Hello from write" to the kernel log and returns the number of bytes written (in this case, it just returns the size passed to it)
+
+
+
+
+
+```
+ssize_t myread(struct file *files, char __user *buff, size_t size, loff_t *loff)
+{
+    printk("Hello from read \n");
+    return 0;
+}
+
+
+```
+This function is called when a read operation is performed on the proc file. It prints "Hello from read" to the kernel log and returns 0, indicating no data is being read.
+
+
+
+```
+const struct proc_ops proc_file_operations = {
+    .proc_read = myread,
+    .proc_write = mywrite
+};
+
+
+```
+This structure defines the operations (read and write) for the proc file. 
+It associates the myread function with read operations and the mywrite function with write operations
+
+
+```
+struct proc_ops {
+    // File open operation
+    int (*proc_open)(struct inode *inode, struct file *file);
+    
+    // File release operation (close)
+    int (*proc_release)(struct inode *inode, struct file *file);
+    
+    // Read operation
+    ssize_t (*proc_read)(struct file *file, char __user *buffer, size_t count, loff_t *pos);
+    
+    // Write operation
+    ssize_t (*proc_write)(struct file *file, const char __user *buffer, size_t count, loff_t *pos);
+    
+    // Other operations can be included as needed, such as ioctl, mmap, etc.
+    
+    // (Optional) poll/select support
+    unsigned int (*proc_poll)(struct file *file, struct poll_table_struct *wait);
+    
+    // (Optional) ioctl support
+    long (*proc_ioctl)(struct file *file, unsigned int cmd, unsigned long arg);
+    
+    // (Optional) mmap support
+    int (*proc_mmap)(struct file *file, struct vm_area_struct *vma);
+    
+    // Other fields as needed
+};
+
+
+```
+
+
+The proc_ops structure in Linux is used to define operations that can be performed on entries in the proc filesystem (/proc). 
+It provides a way to implement file-like behavior for proc entries, allowing them to be read from and written to like regular files. 
+This structure replaces the older file_operations structure for proc files.
+
+
+```
+static int mykernel_init(void)
+{
+    proc_create("google", 0666, NULL, &proc_file_operations);
+    printk("Hello from kernel \n");
+    return 0;
+}
+
+
+```
+
+This function is called when the module is loaded. It creates a proc file named "google" with read and write permissions for everyone (0666) and associates it with the proc_file_operations defined earlier. 
+It also prints "Hello from kernel" to the kernel log
+
+
+
+
+After writing the driver we need to build it, So we will build it dynamically
+
+
+So, we have to write the makefile which will do the build job
 
 
 ```
