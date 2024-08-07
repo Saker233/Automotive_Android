@@ -259,3 +259,22 @@ When a device node is accessed, VFS routes the request to the appropriate device
 
 
 
+So, Generally, The VFS use the file operations struct to get its methods which will be used with the device nodes
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Device Driver Implementation
+
+
+
+we will create 3 files
+
+     1- File_Operations.c
+     2- File_Operations.h
+     3- main.c
+
+
+THe driver will be File_Operations and the main.c is the user space application which we will interact with
+
