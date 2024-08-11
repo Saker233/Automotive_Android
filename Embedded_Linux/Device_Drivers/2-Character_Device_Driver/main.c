@@ -77,7 +77,7 @@ static int __init sakerINIT(void)
  * @param name: Name of the class.
  * @return Pointer to the created class on success, NULL on failure.
  */
-    if (((teraData_st.my_class = class_create(DRIVER_CLASS)) == NULL))
+    if ((teraData_st.my_class = class_create(DRIVER_CLASS)) == NULL)
     {
         printk("Device class can not be created!\n");
         goto ClassError;
