@@ -6,6 +6,16 @@ which are typically integrated into the system's motherboard or chipset and are 
 These devices are usually tightly coupled with the platform's hardware and have specific, well-defined resources such as memory regions, I/O ports, interrupts
 
 
+
+## Why Use Platform Drivers?
+Platform drivers are essential in embedded systems where many devices are integrated into the mainboard or SoC and require direct, low-level management by the operating system. 
+They allow for a modular approach to handling hardware components, providing a clear separation between the hardware-specific code and the core kernel.
+
+
+
+
+
+
 ## Platform Device:
 
  platform device represents a device that is directly attached to the system's physical memory map and does not require bus enumeration like PCI or USB devices
