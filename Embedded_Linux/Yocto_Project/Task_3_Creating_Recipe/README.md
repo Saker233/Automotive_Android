@@ -125,5 +125,43 @@ do_install()
 
 
 ```
+Then the whole recipe
+
+```
+
+SUMMARY = "This is my recipe"
+
+DESCRIPTION = "This recipe done nothing"
+
+LICENSE = "MIT"
+
+# LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-license/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
+
+
+# SRC_URI = "git://github.com/FadyKhalil/DemoApp.git;protocol=https,branch=main"
+
+
+SRC_URI = "file://main.c"
+
+
+
+
+
+do_compile()
+{
+	{CC} {CFLAGS} main.c -o {B}/myapp
+}
+
+
+do_install()
+{
+	mkdir -p ${D}${bindir}
+
+	cp ${B}/myapp ${D}${bindir}
+}
+
+```
+
+
 
 
