@@ -75,6 +75,37 @@ BBLAYERS ?= " \
 
 Now the bitbake can see the layer which we added and it will include it during the build process
 
+
+Now we need to configure our distro to be customized as we need then we will create under conf a directory called "distro" and under distro we will add file "almaza.conf"
+
+
+
+
+
+
+![Screenshot from 2024-08-13 04-48-13](https://github.com/user-attachments/assets/92843043-f569-45ed-9347-c84612ed22c9)
+
+
+
+
+
+
+
+and access this file with any editor
+
+```
+require conf/distro/poky.conf
+
+DISTRO = "Saker_Distro"
+DISTRO_VERSION = "1.0"
+MAINTAINER = "Mohamed Saker https://github.com/Saker233"
+
+
+```
+require will include the poky.conf which has a lot of variables related to the distro genration
+
+we will override some of these variables like DISTRO_NAME DISTRO_VERSION MAINTAINER
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## local.conf
 
