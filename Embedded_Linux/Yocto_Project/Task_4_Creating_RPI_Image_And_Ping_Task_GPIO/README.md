@@ -485,3 +485,17 @@ IMAGE_INSTALL += " packagegroup-core-boot"
 
 
 
+Now we are more than ready to start the build process
+
+
+```
+cd /build-rpi
+
+
+bitbake core-image-minimal
+
+```
+
+
+It will take some times, depends on the internet speed and the CPU efficiency and the speed of the harddisk itself
+
