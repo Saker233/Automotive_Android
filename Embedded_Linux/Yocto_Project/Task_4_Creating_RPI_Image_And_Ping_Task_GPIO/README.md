@@ -530,3 +530,20 @@ bitbake core-image-minimal
 
 It will take some times, depends on the internet speed and the CPU efficiency and the speed of the harddisk itself
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Issue I encountered while building
+
+There was a problem with my firewall preventing the port 9418 which is used for the git protocol. Some bitbake recipes are using this protocol for cloning repos
+
+
+
+So we are making it use http instead
+
+```
+git config --global url."https://github.com/".insteadOf git@github.com:
+git config --global url."https://".insteadOf git://
+
+```
+
