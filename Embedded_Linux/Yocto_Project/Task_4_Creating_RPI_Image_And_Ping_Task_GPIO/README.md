@@ -55,7 +55,7 @@ to add the meta-raspberrypi access the bblayers,conf with your prefrable editor
 
 and add your layer in the BBLAYERS variable
 
-```
+```                            
 # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
 # changes incompatibly
 POKY_BBLAYERS_CONF_VERSION = "2"
@@ -68,6 +68,10 @@ BBLAYERS ?= " \
   /home/saker/poky/meta-poky \
   /home/saker/poky/meta-yocto-bsp \
   /home/saker/poky/meta-raspberrypi \
+  /home/saker/meta_iti              \
+  /home/saker/poky/meta-openembedded/meta-oe \
+  /home/saker/poky/meta-openembedded/meta-python  \
+  /home/saker/poky/meta-openembedded/meta-networking  \
   "
 
 
@@ -512,6 +516,50 @@ IMAGE_INSTALL += " packagegroup-core-boot"
 
 
 
+IMAGE_INSTALL:append = " \
+    python3 \
+    util-linux \
+    bluez5 \
+    i2c-tools \
+    bridge-utils \
+    hostapd \
+    iptables \
+    wpa-supplicant \
+    pi-bluetooth \
+    bluez5-testtools \
+    udev-rules-rpi \
+    linux-firmware \
+    iw \
+    kernel-modules \
+    linux-firmware-ralink \
+    linux-firmware-rtl8192ce \
+    linux-firmware-rtl8192cu \
+    linux-firmware-rtl8192su \
+    linux-firmware-rpidistro-bcm43430 \
+    linux-firmware-bcm43430 \
+    connman \
+    connman-client \
+    dhcpcd \
+    openssh \
+    psplash \
+    psplash-raspberrypi \
+    coreutils \
+"
+
+
+DISTRO_FEATURES:append = " \
+    bluez5 \
+    bluetooth \
+    wifi \
+    pi-bluetooth \
+    linux-firmware-bcm43430 \
+    systemd \
+    usrmerge \
+    ipv4 \
+"
+
+
+
 ```
 
 
@@ -546,4 +594,133 @@ git config --global url."https://github.com/".insteadOf git@github.com:
 git config --global url."https://".insteadOf git://
 
 ```
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## Task -> Create e recipe to be included with the Image to ping on a specific IP when it's success Turn led on otherwise turn it off
+
+
+
+Until now we have just created the Imgae with all its requiments only but we need to create the recipe whcih will allow is to do so
+
+
+
+
+I've already created a layer outside the poky directory called "meta_iti"
+
+
+
+
+![Screenshot from 2024-08-14 10-08-16](https://github.com/user-attachments/assets/5b08cef5-1fbe-484a-b7cd-d13bf4b619ac)
+
+
+
+
+
+
+
+
+
+![Screenshot from 2024-08-14 10-09-08](https://github.com/user-attachments/assets/e48a3755-cd80-4cf3-bf0b-b7af02f35418)
+
+
+
+
+
+
+
+
+
+
+I have created 2 things the recipe and the application itself
+
+
+
+the application -> ping_led.py
+
+```
+import RPi.GPIO as GPIO
+import subprocess
+import time
+
+
+LED_RED_PIN = 2
+LED_GREEN_PIN = 3
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_RED_PIN, GPIO.OUT)
+GPIO.setup(LED_GREEN_PIN, GPIO.OUT)
+
+
+IP_ADDRESS = input("Enter the IP address to ping: ")
+
+def ping(ip):
+    try:
+        
+        output = subprocess.run(['ping', '-c', '1', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if output.returncode == 0:
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+
+def control_leds(success):
+    if success:
+        GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
+        GPIO.output(LED_RED_PIN, GPIO.LOW)
+    else:
+        GPIO.output(LED_GREEN_PIN, GPIO.LOW)
+        GPIO.output(LED_RED_PIN, GPIO.HIGH)
+
+try:
+    while True:
+        success = ping(IP_ADDRESS)
+        control_leds(success)
+        time.sleep(10)
+except KeyboardInterrupt:
+    print("Script terminated by user.")
+finally:
+    GPIO.cleanup()
+
+
+
+```
+
+
+
+Then we create our recipe which will provide the image of the existence of the applciation to be included inside the image building process
+
+
+```
+SUMMARY = "A script to ping an IP and control LEDs based on the result"
+DESCRIPTION = "This recipe installs a Python script that pings a specified IP and controls LEDs on a Raspberry Pi."
+
+
+LICENSE = "CLOSED"
+
+
+SRC_URI = "file://ping_led.py"
+
+# Set the destination directory for the script
+do_install() {
+    install -d ${D}${bindir}
+    install -m 0755 ${WORKDIR}/ping_led.py ${D}${bindir}/ping_led.py
+}
+
+
+```
+This recipe suposed to load the application inside the image under /usr/bin
+
+
+
+
+
+
+
+
+
+
 
