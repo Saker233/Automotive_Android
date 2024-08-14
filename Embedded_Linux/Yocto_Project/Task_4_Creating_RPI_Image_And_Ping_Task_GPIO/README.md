@@ -539,7 +539,7 @@ There was a problem with my firewall preventing the port 9418 which is used for 
 
 
 
-So we are making it use http instead
+So we are making it use http instead, Run these commands before running the bitbake or after the bitbake terminated for errors
 
 ```
 git config --global url."https://github.com/".insteadOf git@github.com:
