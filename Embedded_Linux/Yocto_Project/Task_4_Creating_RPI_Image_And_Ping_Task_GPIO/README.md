@@ -516,6 +516,7 @@ IMAGE_INSTALL += " packagegroup-core-boot"
 
 
 
+
 IMAGE_INSTALL:append = " \
     python3 \
     util-linux \
@@ -535,8 +536,8 @@ IMAGE_INSTALL:append = " \
     linux-firmware-rtl8192ce \
     linux-firmware-rtl8192cu \
     linux-firmware-rtl8192su \
-    linux-firmware-rpidistro-bcm43430 \
-    linux-firmware-bcm43430 \
+    linux-firmware-rpidistro-bcm43455 \
+    linux-firmware-bcm43455 \
     connman \
     connman-client \
     dhcpcd \
@@ -547,16 +548,32 @@ IMAGE_INSTALL:append = " \
 "
 
 
+
 DISTRO_FEATURES:append = " \
     bluez5 \
     bluetooth \
     wifi \
     pi-bluetooth \
-    linux-firmware-bcm43430 \
+    linux-firmware-bcm43455 \
     systemd \
     usrmerge \
     ipv4 \
 "
+
+MACHINE_FEATURES:append = " \
+    bluetooth \
+    wifi \
+"
+
+IMAGE_FEATURES:append = " \
+    splash \
+"
+IMAGE_INSTALL:append = " xserver-xorg xf86-video-fbdev xf86-input-evdev xterm m>
+
+
+
+IMAGE_INSTALL += "pingled"
+
 
 
 
@@ -636,55 +653,63 @@ I have created 2 things the recipe and the application itself
 
 
 
-the application -> ping_led.py
+the application -> ping_led.sh
 
 ```
-import RPi.GPIO as GPIO
-import subprocess
-import time
+#!/bin/bash
 
 
-LED_RED_PIN = 2
-LED_GREEN_PIN = 3
+LED_RED_PIN=2
+LED_GREEN_PIN=3
 
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(LED_RED_PIN, GPIO.OUT)
-GPIO.setup(LED_GREEN_PIN, GPIO.OUT)
+if [ -z "$1" ]; then
+    echo "Usage: $0 <IP_ADDRESS>"
+    exit 1
+fi
 
 
-IP_ADDRESS = input("Enter the IP address to ping: ")
+IP_ADDRESS="$1"
 
-def ping(ip):
-    try:
-        
-        output = subprocess.run(['ping', '-c', '1', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if output.returncode == 0:
-            return True
-        else:
-            return False
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return False
 
-def control_leds(success):
-    if success:
-        GPIO.output(LED_GREEN_PIN, GPIO.HIGH)
-        GPIO.output(LED_RED_PIN, GPIO.LOW)
-    else:
-        GPIO.output(LED_GREEN_PIN, GPIO.LOW)
-        GPIO.output(LED_RED_PIN, GPIO.HIGH)
+setup_gpio() {
+    echo "$LED_RED_PIN" > /sys/class/gpio/export
+    echo "$LED_GREEN_PIN" > /sys/class/gpio/export
+    echo "out" > /sys/class/gpio/gpio$LED_RED_PIN/direction
+    echo "out" > /sys/class/gpio/gpio$LED_GREEN_PIN/direction
+}
 
-try:
-    while True:
-        success = ping(IP_ADDRESS)
-        control_leds(success)
-        time.sleep(10)
-except KeyboardInterrupt:
-    print("Script terminated by user.")
-finally:
-    GPIO.cleanup()
 
+cleanup_gpio() {
+    echo "$LED_RED_PIN" > /sys/class/gpio/unexport
+    echo "$LED_GREEN_PIN" > /sys/class/gpio/unexport
+}
+
+
+control_leds() {
+    if ping -c 1 "$IP_ADDRESS" > /dev/null 2>&1; then
+        echo "1" > /sys/class/gpio/gpio$LED_GREEN_PIN/value
+        echo "0" > /sys/class/gpio/gpio$LED_RED_PIN/value
+    else
+        echo "0" > /sys/class/gpio/gpio$LED_GREEN_PIN/value
+        echo "1" > /sys/class/gpio/gpio$LED_RED_PIN/value
+    fi
+}
+
+
+main() {
+    setup_gpio
+
+    while true; do
+        control_leds
+        sleep 10  
+    done
+}
+
+
+trap cleanup_gpio EXIT
+
+main
 
 
 ```
@@ -702,17 +727,22 @@ DESCRIPTION = "This recipe installs a Python script that pings a specified IP an
 LICENSE = "CLOSED"
 
 
-SRC_URI = "file://ping_led.py"
+SRC_URI = "file://ping_led.sh"
 
 # Set the destination directory for the script
 do_install() {
     install -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/ping_led.py ${D}${bindir}/ping_led.py
+    install -m 0755 ${WORKDIR}/ping_led.py ${D}${bindir}/ping_led.sh
 }
 
 
 ```
 This recipe suposed to load the application inside the image under /usr/bin
+
+
+
+
+[Watch the video on Google Drive](https://drive.google.com/file/d/1GJgNccpXLCKmGiETpylUMbr_EcdPz0vL/view?usp=sharing)
 
 
 
